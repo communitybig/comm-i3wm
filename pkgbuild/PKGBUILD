@@ -43,7 +43,6 @@ depends=(
     'breeze'
     #'flatpak'
     'gvfs'
-    'bibata-cursor-theme-bin'
     'pacseek'
     'otf-font-awesome'
     'ttf-fira-sans'
