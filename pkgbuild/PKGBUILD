@@ -127,6 +127,10 @@ depends=(
     'dunst'
     'picom'
     'xkeyboard-config'
+    'nitrogen'
+    'wmutils'
+    'lxappearance'
+    'clipit'
     #tela de login
     'lightdm'
     'lightdm-slick-greeter'
