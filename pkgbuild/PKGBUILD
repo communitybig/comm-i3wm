@@ -71,7 +71,7 @@ depends=(
     'pipewire-alsa'
     'pipewire-pulse'
     'manjaro-pipewire'
-    'jack2' 
+#    'jack2'
     'lib32-jack2'
     'libsndfile'
     'lib32-libsndfile'    
