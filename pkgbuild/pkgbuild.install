@@ -20,7 +20,7 @@ export reset="\033[0m"
 
 msg() {
 	local msg="$1"
-	echo -e "${green}==>[comm-hyprland] ${bold}${yellow}${msg}${reset}" >&2
+	echo -e "${green}==>[comm-i3wm] ${bold}${yellow}${msg}${reset}" >&2
 }
 
 post_install() {
