@@ -54,7 +54,6 @@ depends=(
     'ttf-dejavu'
     'oh-my-posh-bin'
     'checkupdates-with-aur'
-    'comm-wallpapers-i3'
     'firefox'
     'nautilus'
     'nautilus-open-any-terminal'
