@@ -29,7 +29,6 @@ depends=(
     'xclip'
     'kitty'
     'sync-gnome-theme-to-qt'
-    'python-pywal'
     'blueberry'
     'scrot'
     'rofi-clipboard'
