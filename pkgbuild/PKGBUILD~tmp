@@ -43,7 +43,7 @@ depends=(
     'bigicons-papient'
     'papirus-icon-theme'
     'breeze'
-    #'flatpak'
+    'flatpak'
     'gvfs'
     'bibata-cursor-theme-bin'
     'pacseek'
