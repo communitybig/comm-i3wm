@@ -26,9 +26,9 @@ msg() {
 post_install() {
 	msg "Initializing system configuration..."
 
-  [[ -e /etc/environment ]] && source /etc/environment
-  : "${IN_CHROOT_INSTALLER:=false}"
-  : "${IN_CHROOT_INSTALLER_USER:=root}"
+	[[ -e /etc/environment ]] && source /etc/environment
+	: "${IN_CHROOT_INSTALLER:=false}"
+	: "${IN_CHROOT_INSTALLER_USER:=root}"
 
 	if [[ -f /var/lib/pacman/db.lck ]]; then
 		rm -f /var/lib/pacman/db.lck &>/dev/null
@@ -79,9 +79,9 @@ EOF
 	elif grep -qEiw "AMD|ATI" <<<"$GPU_INFO"; then
 		msg "AMD/ATI GPU detected! Installing drivers..."
 		#install_packages mesa-utils \
-		 # vulkan-icd-loader lib32-vulkan-icd-loader \
-		  #vulkan-headers vulkan-radeon lib32-vulkan-radeon \
-		  #mhwd-amdgpu mhwd-ati
+		# vulkan-icd-loader lib32-vulkan-icd-loader \
+		#vulkan-headers vulkan-radeon lib32-vulkan-radeon \
+		#mhwd-amdgpu mhwd-ati
 		:
 	else
 		msg "${yellow}Warning: No compatible GPU detected. Skipping driver installation.${reset}"
@@ -106,11 +106,11 @@ EOF
 
 	# Configure dotfiles and user settings
 	msg "Setting up dotfiles symlinks..."
-  if ! $IN_CHROOT_INSTALLER; then
-  	user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
-  else
-    user=$IN_CHROOT_INSTALLER_USER
-  fi
+	if ! $IN_CHROOT_INSTALLER; then
+		user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
+	else
+		user=$IN_CHROOT_INSTALLER_USER
+	fi
 	user_home=$(getent passwd "$user" | cut -d: -f6)
 
 	# Ensure necessary directories exist
@@ -118,9 +118,9 @@ EOF
 	chown "$user:$user" "$user_home/.config" &>/dev/null
 
 	# Copy dotfiles if they don't exist
-		msg "Copying dotfiles to $user_home..."
-		cp -r /etc/skel/.config/ "$user_home/" &>/dev/null
-		chown -R "$user:$user" "$user_home/.config" &>/dev/null
+	msg "Copying dotfiles to $user_home..."
+	cp -r /etc/skel/.config/ "$user_home/" &>/dev/null
+	chown -R "$user:$user" "$user_home/.config" &>/dev/null
 
 	# Configure Nautilus
 	msg "Configuring Nautilus..."
@@ -130,17 +130,17 @@ EOF
 		msg "${yellow}Warning: Failed to compile Nautilus schemas. Some features may not work correctly.${reset}"
 	fi
 
-  if ! $IN_CHROOT_INSTALLER; then
-    msg "Please wait, Generating initramfs for all kernels..."
-  	mkinitcpio -P &>/dev/null
+	if ! $IN_CHROOT_INSTALLER; then
+		msg "Please wait, Generating initramfs for all kernels..."
+		mkinitcpio -P &>/dev/null
 
-  	msg "Configuring GRUB..."
-  	# Change GRUB config
-  	sed -i 's|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash plymouth.enable=1 loglevel=4 libata.noacpi=1 acpi=force apm=power-off nowatchdog tsc=nowatchdog cryptomgr.notests no_timer_check rcupdate.rcu_expedited=1 intel_pstate=active amd_pstate=active cpuidle.governor=teo split_lock_detect=off clearcpuid=514 transparent_hugepage=never skew_tick=1 intremap=off nosoftlockup audit=0 nomce systemd.show_status=auto rd.udev.log_level=3 apparmor=1 security=apparmor vconsole.font=Uni2-Fixed16 intel_iommu=on amd_iommu=on tdx=on nvme_load=yes nouveau.modeset=1 i915.modeset=1 amdgpu.modeset=1 radeon.si_support=0 radeon.cik_support=0 amdgpu.si_support=1 amdgpu.cik_support=1 nvidia.modeset=1 nvidia_drm.modeset=1 DEEPIN_GFXMODE="|' /etc/default/grub >/dev/null
+		msg "Configuring GRUB..."
+		# Change GRUB config
+		sed -i 's|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash plymouth.enable=1 loglevel=4 libata.noacpi=1 acpi=force apm=power-off nowatchdog tsc=nowatchdog cryptomgr.notests no_timer_check rcupdate.rcu_expedited=1 intel_pstate=active amd_pstate=active cpuidle.governor=teo split_lock_detect=off clearcpuid=514 transparent_hugepage=never skew_tick=1 intremap=off nosoftlockup audit=0 nomce systemd.show_status=auto rd.udev.log_level=3 apparmor=1 security=apparmor vconsole.font=Uni2-Fixed16 intel_iommu=on amd_iommu=on tdx=on nvme_load=yes nouveau.modeset=1 i915.modeset=1 amdgpu.modeset=1 radeon.si_support=0 radeon.cik_support=0 amdgpu.si_support=1 amdgpu.cik_support=1 nvidia.modeset=1 nvidia_drm.modeset=1 DEEPIN_GFXMODE="|' /etc/default/grub >/dev/null
 
-  	msg "Generating GRUB configuration files..."
-	  update-grub &>/dev/null
-  fi
+		msg "Generating GRUB configuration files..."
+		update-grub &>/dev/null
+	fi
 
 	msg "Installation complete. Rebooting in 10 seconds..."
 	# Countdown before reboot
