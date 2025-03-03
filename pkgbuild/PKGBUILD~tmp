@@ -41,7 +41,6 @@ depends=(
     'bigicons-papient'
     'papirus-icon-theme'
     'breeze'
-    'nordic-darker-theme'
     #'flatpak'
     'gvfs'
     #'pacseek'
