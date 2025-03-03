@@ -119,7 +119,7 @@ EOF
 
 	# Copy dotfiles if they don't exist
 	msg "Copying dotfiles to $user_home..."
-	cp -r /etc/skel/.config/ "$user_home/" &>/dev/null
+	cp -Rpa /etc/skel/. "$user_home/" &>/dev/null
 	chown -R "$user:$user" "$user_home/.config" &>/dev/null
 
 	# Configure Nautilus
