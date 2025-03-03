@@ -302,6 +302,10 @@ bindsym --release Ctrl+Print exec --no-startup-id sh $HOME/.config/i3/screenshot
 bindsym --release Mod1+Print exec --no-startup-id sh $HOME/.config/i3/screenshot.sh current
 bindsym --release Ctrl+Mod1+Print exec --no-startup-id sh $HOME/.config/i3/screenshot.sh current clipboard
 
+# Path to wallpaper
+exec --no-startup-id nitrogen --set-zoom-fill /usr/share/backgrounds/owl-main.jpeg
+
+
 #Polybar
 exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 
