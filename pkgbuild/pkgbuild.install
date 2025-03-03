@@ -104,23 +104,21 @@ EOF
 	mkdir -p /var/lib/lightdm >/dev/null
 	chown -R lightdm:lightdm /var/lib/lightdm >/dev/null
 
-	# Configure dotfiles and user settings
-	msg "Setting up dotfiles symlinks..."
-	if ! $IN_CHROOT_INSTALLER; then
-		user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
-	else
-		user=$IN_CHROOT_INSTALLER_USER
-	fi
-	user_home=$(getent passwd "$user" | cut -d: -f6)
+  msg "Setting up user..."
+  user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
+  if $IN_CHROOT_INSTALLER; then
+    if [[ -n $IN_CHROOT_INSTALLER_USER || $IN_CHROOT_INSTALLER_USER != 'root' ]]; then
+      user=$IN_CHROOT_INSTALLER_USER
+    fi
+  fi
+  user_home=$(getent passwd "$user" | cut -d: -f6)
 
-	# Ensure necessary directories exist
-	mkdir -p "$user_home/.config" &>/dev/null
-	chown "$user:$user" "$user_home/.config" &>/dev/null
+  msg "Copying skel to $user_home..."
+  mkdir -p "$user_home" &>/dev/null
+  cp -Rfpa /etc/skel/. "$user_home/" &>/dev/null
 
-	# Copy dotfiles if they don't exist
-	msg "Copying dotfiles to $user_home..."
-	cp -Rpa /etc/skel/. "$user_home/" &>/dev/null
-	chown -R "$user:$user" "$user_home/.config" &>/dev/null
+  msg "Setting user folder permissions in ${user_home}"
+  chown -R "$user:$user" "$user_home" &>/dev/null
 
 	# Configure Nautilus
 	msg "Configuring Nautilus..."
