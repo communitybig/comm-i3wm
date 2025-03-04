@@ -50,14 +50,14 @@ wsp = 2
 type = internal/date
 interval = 1
 
-date = %a %d %b
+date = %d %b
 time = %H:%M
 
 label = %date%  %time%
 
 [module/i3-helper]
 type = custom/text
-content = "󰋽 i3 help" ; ícone de ponto de exclamação em círculo do Font Awesome
+content = 󰋽 i3 help
 content-foreground = ${colors.accent}
 click-left = bash ~/.config/polybar/i3-helper.sh
 content-padding = 1

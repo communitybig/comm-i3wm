@@ -43,6 +43,7 @@ depends=(
     'xcursor-breeze'
     'nordic-darker-theme'
     'xdg-user-dirs-gtk'
+    'pantheon-calendar'
     #'flatpak'
     'gvfs'
     #'pacseek'
