@@ -56,10 +56,11 @@ time = %H:%M
 label = %date%  %time%
 
 [module/i3-helper]
-type = custom/script
-exec = ~/.config/polybar/i3-helper.sh
-interval = 0
-click-left = notify-send "i3 Shortcuts" "$(~/.config/polybar/i3-helper.sh)"
+type = custom/text
+content = "󰋽 i3 help" ; ícone de ponto de exclamação em círculo do Font Awesome
+content-foreground = ${colors.accent}
+click-left = bash ~/.config/polybar/i3-helper.sh
+content-padding = 1
 
 [module/network]
 type = custom/script
