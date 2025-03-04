@@ -14,8 +14,6 @@ fixed-center = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
-primary = ${colors.primary}
-accent = ${colors.accent}
 
 font-0 = "Noto Sans:size=10;2"
 font-1 = "Symbols Nerd Font:size=12;3"
