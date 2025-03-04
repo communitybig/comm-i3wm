@@ -1,31 +1,36 @@
 #!/bin/bash
 
-eth_status=$(cat /sys/class/net/eth0/operstate 2>/dev/null)
-wifi_status=$(cat /sys/class/net/wlan0/operstate 2>/dev/null)
+# Encontra interfaces Ethernet (começa com 'e', 'en' ou 'eth')
+eth_interfaces=$(ls /sys/class/net | grep -E '^(e|en|eth)')
 
-if [ "$eth_status" = "up" ]; then
-    echo ""
-elif [ "$wifi_status" = "up" ]; then
-    echo ""
-else
-    echo ""
-fi
+# Encontra interfaces Wi-Fi (começa com 'w' ou 'wl')
+wifi_interfaces=$(ls /sys/class/net | grep -E '^(w|wl)')
 
-#!/bin/bash
+# Verifica se alguma interface Ethernet está ativa
+for eth in $eth_interfaces; do
+    # Ignora interfaces virtuais ou não físicas (como docker)
+    if [[ "$eth" == "docker"* || "$eth" == "veth"* || "$eth" == "virbr"* || "$eth" == "br-"* ]]; then
+        continue
+    fi
+    
+    eth_state=$(cat /sys/class/net/$eth/operstate 2>/dev/null)
+    eth_carrier=$(cat /sys/class/net/$eth/carrier 2>/dev/null)
+    
+    if [[ "$eth_state" == "up" && "$eth_carrier" -eq 1 ]]; then
+        echo "" Ethernet
+        exit 0
+    fi
+done
 
-# Interface Ethernet (usando o nome real encontrado)
-eth_interface="ens3"
+# Verifica se alguma interface Wi-Fi está ativa
+for wifi in $wifi_interfaces; do
+    wifi_state=$(cat /sys/class/net/$wifi/operstate 2>/dev/null)
+    
+    if [[ "$wifi_state" == "up" ]]; then
+        echo "  Wi-Fi"
+        exit 0
+    fi
+done
 
-# Verificar status da Ethernet
-eth_state=$(cat /sys/class/net/$eth_interface/operstate 2>/dev/null)
-eth_carrier=$(cat /sys/class/net/$eth_interface/carrier 2>/dev/null)
-
-# Interface Wi-Fi (caso exista)
-wifi_interface=$(ls /sys/class/net | grep -E '^w')
-
-if [[ "$eth_state" == "up" && "$eth_carrier" -eq 1 ]]; then
-    echo "" Ethernet"
-elif [ -n "$wifi_interface" ] && [ "$(cat /sys/class/net/$wifi_interface/operstate)" = "up" ]; then
-    echo "  wi-Fi"
-else
-    echo "  Offline"
+# Se nenhuma interface estiver ativa
+echo " Offline"
