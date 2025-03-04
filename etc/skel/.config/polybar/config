@@ -11,16 +11,20 @@ width = 100%
 height = 27
 radius = 0
 fixed-center = true
+module-margin-left = 2
+module-margin-right = 2
 
 background = ${colors.background}
 foreground = ${colors.foreground}
+primary = ${colors.primary}
+accent = ${colors.accent}
 
 font-0 = "Noto Sans:size=10;2"
 font-1 = "Symbols Nerd Font:size=12;3"
 
 modules-left = workspaces
 modules-center = date
-modules-right = network battery volume shutdown
+modules-right = i3-helper network battery volume logout reboot shutdown
 
 [module/workspaces]
 type = internal/i3
@@ -30,7 +34,7 @@ enable-scroll = false
 label-focused = %index%
 label-focused-background = ${colors.primary}
 label-focused-underline = ${colors.accent}
-label-focused-padding = 1
+label-focused-padding = 2
 
 label-unfocused = %index%
 label-unfocused-padding = 1
@@ -50,6 +54,12 @@ date = %a %d %b
 time = %H:%M
 
 label = %date%  %time%
+
+[module/i3-helper]
+type = custom/script
+exec = ~/.config/polybar/i3-helper.sh
+interval = 0
+click-left = notify-send "i3 Shortcuts" "$(~/.config/polybar/i3-helper.sh)"
 
 [module/network]
 type = custom/script
@@ -78,7 +88,23 @@ format-volume = <label-volume>
 label-volume =  %percentage%%
 label-muted =  muted
 
+[module/logout]
+type = custom/text
+content = "  "
+content-foreground = ${colors.accent}
+click-left = loginctl terminate-user $USER  # Encerra sessão
+background = ${colors.background}
+
+[module/reboot]
+type = custom/text
+content = "  "
+content-foreground = ${colors.accent}
+click-left = systemctl reboot
+background = ${colors.background}
+
 [module/shutdown]
 type = custom/text
 content = "  "
+content-foreground = ${colors.accent}
 click-left = systemctl poweroff
+background = ${colors.background}
