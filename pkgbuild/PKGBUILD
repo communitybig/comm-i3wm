@@ -52,7 +52,7 @@ depends=(
     'gvfs-mtp'
     'gvfs-goa'
     'gvfs-smb'
-    'gvfs-photo2'
+    'gvfs-gphoto2'
     #'pacseek'
     'otf-font-awesome'
     'ttf-fira-sans'
