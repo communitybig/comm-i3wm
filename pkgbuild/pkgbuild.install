@@ -104,21 +104,21 @@ EOF
 	mkdir -p /var/lib/lightdm >/dev/null
 	chown -R lightdm:lightdm /var/lib/lightdm >/dev/null
 
-  msg "Setting up user..."
-  user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
-  if $IN_CHROOT_INSTALLER; then
-    if [[ -n $IN_CHROOT_INSTALLER_USER || $IN_CHROOT_INSTALLER_USER != 'root' ]]; then
-      user=$IN_CHROOT_INSTALLER_USER
-    fi
-  fi
-  user_home=$(getent passwd "$user" | cut -d: -f6)
+	msg "Setting up user..."
+	user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
+	if $IN_CHROOT_INSTALLER; then
+		if [[ -n $IN_CHROOT_INSTALLER_USER || $IN_CHROOT_INSTALLER_USER != 'root' ]]; then
+			user=$IN_CHROOT_INSTALLER_USER
+		fi
+	fi
+	user_home=$(getent passwd "$user" | cut -d: -f6)
 
-  msg "Copying skel to $user_home..."
-  mkdir -p "$user_home" &>/dev/null
-  cp -Rfpa /etc/skel/. "$user_home/" &>/dev/null
+	msg "Copying skel to $user_home..."
+	mkdir -p "$user_home" &>/dev/null
+	cp -Rfpa /etc/skel/. "$user_home/" &>/dev/null
 
-  msg "Setting user folder permissions in ${user_home}"
-  chown -R "$user:$user" "$user_home" &>/dev/null
+	msg "Setting user folder permissions in ${user_home}"
+	chown -R "$user:$user" "$user_home" &>/dev/null
 
 	# Configure Nautilus
 	msg "Configuring Nautilus..."
