@@ -310,7 +310,7 @@ bindsym --release Ctrl+Mod1+Print exec --no-startup-id sh $HOME/.config/i3/scree
 exec --no-startup-id nitrogen --set-zoom-fill /usr/share/backgrounds/owl-main.jpg
 
 # Mount disks automatically
-exec_always --no-startup-id ~/.config/i3/mount-disks.sh
+#exec_always --no-startup-id ~/.config/i3/mount-disks.sh
 
 #Polybar
 exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
