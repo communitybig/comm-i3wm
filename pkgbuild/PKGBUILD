@@ -108,13 +108,13 @@ depends=(
 
 	#packages community
 	'auto-tweaks-browser' # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
-    'comm-webapps'
-    'biglinux-driver-manager'
+    #'comm-webapps'
+    #'biglinux-driver-manager'
     'big-mount'
-    'biglinux-noise-reduction-pipewire'
+    #'biglinux-noise-reduction-pipewire'
 	'comm-base-config'    # Package configuration BASE
 	#'bigcontrolcenter-baase'    # Base files and libs to bigcontrolcenter interfaces
-	'big-store'                 # A friendly interface using bigbashview
+	#'big-store'                 # A friendly interface using bigbashview
 	#'comm-restore-config'       # Central de controle para restaurar configurações de ambiente e aplicativos
 
 	#drivers de vídeo
