@@ -86,7 +86,15 @@ depends=(
 	'lib32-portaudio'
 	'pipewire-alsa'
 	'pipewire-pulse'
+    'pipewire-jack'
+    'lib32-pipewire'
+    'libpipewire'
+    'lib32-libpipewire'
+    'lib32-pipewire-jack'
+    'pipewire-biglinux-config-git'
+    'gst-plugin-pipewire'
 	'manjaro-pipewire'
+    'pcaudiolib'
 	'sox'
 
 	#Outros
