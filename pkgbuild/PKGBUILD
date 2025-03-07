@@ -163,6 +163,8 @@ depends=(
 	'wmutils'
 	'lxappearance'
 	'clipit'
+    'yad'
+    'xfce4-power-manager'
 
 	#tela de login
 	'lightdm'

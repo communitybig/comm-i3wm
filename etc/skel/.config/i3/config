@@ -52,6 +52,9 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# xfce4-power-manager
+exec --no-startup-id xfce4-power-manager
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
