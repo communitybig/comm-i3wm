@@ -55,6 +55,9 @@ bindsym $mod+Return exec i3-sensible-terminal
 # xfce4-power-manager
 exec --no-startup-id xfce4-power-manager
 
+# open xfce4-power-manager
+bindsym $mod+Shift+p exec xfce4-power-manager-settings
+
 # kill focused window
 bindsym $mod+Shift+q kill
 

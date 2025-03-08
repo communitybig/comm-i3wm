@@ -21,6 +21,7 @@ Mod+Shift+1-9 → Move app/window to Workspace
 Mod+arrows → Alt Window
 Mod+Shift+arrows → Move Window
 Mod+f → full screen/exit full screen
+Mod+Shift+p → Open power manager
 EOF
 
 # Define o tema escuro (para ajudar com o tema Nordic-darker)
