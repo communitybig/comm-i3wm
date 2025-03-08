@@ -51,8 +51,6 @@ depends=(
 	'gvfs-goa'
 	'gvfs-smb'
 	'gvfs-gphoto2'
-	#'pacseek'
-	#'flatpak'
 	'otf-font-awesome'
 	'ttf-fira-sans'
 	'ttf-fira-code'
@@ -61,17 +59,7 @@ depends=(
 	'ttf-nerd-fonts-symbols-with-biglinux'
 	'oh-my-posh-bin'
 	'checkupdates-with-aur'
-	'firefox'
-	'thunar'
-	'thunar-archive-plugin'
-	'thunar-volman'
 	'unarchiver'
-	'evince'
-	'libreoffice-fresh'
-	'galculator'
-	'xed'
-	'loupe'
-	'mpv'
 	'imv'
 	'ffmpegthumbnailer'
 	'wireplumber'
@@ -108,6 +96,7 @@ depends=(
 	'grub-btrfs-timeshift'
 	'grub-btrfs'
 	'umc'
+    'amd-ucode'
 	'libxcvt'
 	'b43-fwcutter'
 	'glxinfo'
@@ -120,7 +109,7 @@ depends=(
     'big-mount'
     #'biglinux-noise-reduction-pipewire'
 	'comm-base-config'    # Package configuration BASE
-	#'bigcontrolcenter-baase'    # Base files and libs to bigcontrolcenter interfaces
+	#'bigcontrolcenter-base'    # Base files and libs to bigcontrolcenter interfaces
 	#'big-store'                 # A friendly interface using bigbashview
 	#'comm-restore-config'       # Central de controle para restaurar configurações de ambiente e aplicativos
 
@@ -134,6 +123,7 @@ depends=(
 	'mhwd-nvidia-470xx'
 	'mesa'
 	'lib32-mesa'
+    'xf86-video-amdgpu'
 	'vulkan-mesa-layers'
 	'lib32-vulkan-mesa-layers'
 	'vulkan-headers'
@@ -166,7 +156,6 @@ depends=(
 	'zenity'
 	'feh'
 	'dunst'
-	#'picom'
 	'xkeyboard-config'
 	'nitrogen'
 	'wmutils'
@@ -196,12 +185,18 @@ depends=(
 
 optdepends=(
 	'chafa'
-	#'blueberry: Bluetooth support'
-	#'xfce4-taskmanager: Task manager'
-	#'xfce4-screenshooter: Screenshot tool'
-	#'thunar-archive-plugin: Archive support for Thunar'
-	#'xfce4-battery-plugin: Battery monitor'
-	#'xfce4-weather-plugin: Weather plugin'
+    'firefox'
+	'thunar'
+	'thunar-archive-plugin'
+	'thunar-volman'
+    'evince'
+	'libreoffice-fresh'
+	'galculator'
+    'xed'
+	'pix'
+	'mpv'
+    'flatpak'
+	
 )
 
 arch=('any')
