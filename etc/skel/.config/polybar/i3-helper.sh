@@ -11,16 +11,17 @@ TMPFILE=$(mktemp /tmp/i3-helper.XXXXXX)
 
 # Escreve os atalhos no arquivo temporário com formatação melhorada
 cat > "$TMPFILE" <<EOF
-<b>i3 ShortCuts</b>
+i3 ShortCuts
 
-<span color="#81A1C1"><b>Mod+Enter</b></span>  → Open Terminal
-<span color="#81A1C1"><b>Mod+d</b></span>      → Open Menu (rofi/dmenu)
-<span color="#81A1C1"><b>Mod+Shift+q</b></span> → Close App/Window
-<span color="#81A1C1"><b>Mod+1-9</b></span>    → Alt Workspace
-<span color="#81A1C1"><b>Mod+Shift+1-9</b></span> → Move app/window to Workspace
-<span color="#81A1C1"><b>Mod+arrows</b></span> → Alt Window
-<span color="#81A1C1"><b>Mod+Shift+arrows</b></span> → Move Window
-<span color="#81A1C1"><b>Mod+f</b></span> → full screen/exit full screen
+Mod+Enter  → Open Terminal
+Mod+d      → Open Menu (rofi/dmenu)
+Mod+Shift+q → Close App/Window
+Mod+1-9    → Alt Workspace
+Mod+Shift+1-9 → Move app/window to Workspace
+Mod+arrows → Alt Window
+Mod+Shift+arrows → Move Window
+Mod+f → full screen/exit full screen
+Mod+Shift+p → Open power manager
 EOF
 
 # Define o tema escuro (para ajudar com o tema Nordic-darker)

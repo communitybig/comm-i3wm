@@ -52,6 +52,12 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# xfce4-power-manager
+exec --no-startup-id xfce4-power-manager
+
+# open xfce4-power-manager
+bindsym $mod+Shift+p exec xfce4-power-manager-settings
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -310,7 +316,7 @@ bindsym --release Ctrl+Mod1+Print exec --no-startup-id sh $HOME/.config/i3/scree
 exec --no-startup-id nitrogen --set-zoom-fill /usr/share/backgrounds/owl-main.jpg
 
 # Mount disks automatically
-exec_always --no-startup-id ~/.config/i3/mount-disks.sh
+#exec_always --no-startup-id ~/.config/i3/mount-disks.sh
 
 #Polybar
 exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh

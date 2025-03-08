@@ -1,6 +1,5 @@
 # Maintainer: Narayan Silva<narayanlimasilva@gmail.com>
-# Theme Contributor: AriosJentu
-# Upstream: https://github.com/AriosJentu/i3-polybar-config
+
 
 pkgname=comm-i3wm
 pkgdesc="Meta package for i3wm"
@@ -86,7 +85,15 @@ depends=(
 	'lib32-portaudio'
 	'pipewire-alsa'
 	'pipewire-pulse'
+    'pipewire-jack'
+    'lib32-pipewire'
+    'libpipewire'
+    'lib32-libpipewire'
+    'lib32-pipewire-jack'
+    'pipewire-biglinux-config-git'
+    'gst-plugin-pipewire'
 	'manjaro-pipewire'
+    'pcaudiolib'
 	'sox'
 
 	#Outros
@@ -108,6 +115,10 @@ depends=(
 
 	#packages community
 	'auto-tweaks-browser' # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
+    #'comm-webapps'
+    #'biglinux-driver-manager'
+    'big-mount'
+    #'biglinux-noise-reduction-pipewire'
 	'comm-base-config'    # Package configuration BASE
 	#'bigcontrolcenter-baase'    # Base files and libs to bigcontrolcenter interfaces
 	#'big-store'                 # A friendly interface using bigbashview
@@ -131,6 +142,8 @@ depends=(
 	'lib32-vulkan-icd-loader'
 	'vulkan-intel'
 	'lib32-vulkan-intel'
+    'vulkan-radeon'
+    'lib32-vulkan-radeon'
 
 	# X11 Server and components
 	'xorg-server'
@@ -159,6 +172,8 @@ depends=(
 	'wmutils'
 	'lxappearance'
 	'clipit'
+    'yad'
+    'xfce4-power-manager'
 
 	#tela de login
 	'lightdm'
