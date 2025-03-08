@@ -66,6 +66,17 @@ depends=(
 	'qt5-svg'
 	'qt5-graphicaleffects'
 	'qt5-quickcontrols2'
+    'firefox'
+	'thunar'
+	'thunar-archive-plugin'
+	'thunar-volman'
+    'evince'
+	'libreoffice-fresh'
+	'galculator'
+    'xed'
+	'pix'
+	'mpv'
+    'flatpak'
 
 	# Audio Dependencies
 	'biglinux-meta-audio-config'
@@ -73,11 +84,11 @@ depends=(
 	'lib32-portaudio'
 	'pipewire-alsa'
 	'pipewire-pulse'
-    'pipewire-jack'
+    #'pipewire-jack'
     'lib32-pipewire'
     'libpipewire'
     'lib32-libpipewire'
-    'lib32-pipewire-jack'
+    #'lib32-pipewire-jack'
     'pipewire-biglinux-config-git'
     'gst-plugin-pipewire'
 	'manjaro-pipewire'
@@ -185,17 +196,7 @@ depends=(
 
 optdepends=(
 	'chafa'
-    'firefox'
-	'thunar'
-	'thunar-archive-plugin'
-	'thunar-volman'
-    'evince'
-	'libreoffice-fresh'
-	'galculator'
-    'xed'
-	'pix'
-	'mpv'
-    'flatpak'
+    
 	
 )
 
