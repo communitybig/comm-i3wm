@@ -121,8 +121,6 @@ depends=(
 	'mhwd-nvidia'
 	'mhwd-ati'
 	'mhwd-nvidia-470xx'
-	'mesa'
-	'lib32-mesa'
     'xf86-video-amdgpu'
 	'vulkan-mesa-layers'
 	'lib32-vulkan-mesa-layers'
@@ -196,6 +194,8 @@ optdepends=(
 	'pix'
 	'mpv'
     'pantheon-calendar'
+    'mesa'
+	'lib32-mesa'
     
 	
 )
