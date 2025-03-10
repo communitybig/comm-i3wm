@@ -169,6 +169,7 @@ optdepends=(
 	lightdm-slick-greeter
 	lightdm-settings
 	webkit2gtk
+    arandr
 	# Extra
 	clang
 	gnu-free-fonts
