@@ -136,8 +136,6 @@ optdepends=(
 	lib32-vulkan-intel
 	vulkan-radeon
 	lib32-vulkan-radeon
-    mesa
-	lib32-mesa
 	# X11 Server and components
 	xorg-server
 	xorg-xinit
@@ -192,7 +190,8 @@ optdepends=(
 	pix
 	mpv
 	pantheon-calendar
-	
+	mesa
+	lib32-mesa
 )
 
 if [ -e "${pkgname}.install" ]; then

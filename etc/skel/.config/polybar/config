@@ -3,7 +3,7 @@ background = #2E3440
 background-alt = #3B4252
 foreground = #D8DEE9
 primary = #81A1C1
-accent = #D08770
+accent = #00BFFF
 alert = #BF616A
 
 [bar/main]
