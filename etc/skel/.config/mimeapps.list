@@ -1,23 +1,25 @@
 [Added Associations]
 text/plain=org.x.editor.desktop;
 application/x-shellscript=org.x.editor.desktop;
-image/png=org.gnome.Loupe.desktop;
-image/jpeg=org.gnome.Loupe.desktop;
-image/svg+xml=org.gnome.Loupe.desktop;
-image/avif=org.gnome.Loupe.desktop;
+image/png=pix.desktop;
+image/jpeg=pix.desktop;
+image/svg+xml=pix.desktop;
+image/avif=pix.desktop;org.gnome.Loupe.desktop;
 video/webm=mpv.desktop;
 image/webp=org.gnome.Loupe.desktop;
 application/pdf=org.gnome.Evince.desktop;
+application/xml=org.x.editor.desktop;
 
 [Default Applications]
-image/png=org.gnome.Loupe.desktop
-image/jpeg=org.gnome.Loupe.desktop
-image/svg+xml=org.gnome.Loupe.desktop
-image/avif=org.gnome.Loupe.desktop
+image/png=pix.desktop
+image/jpeg=pix.desktop
+image/svg+xml=pix.desktop
+image/avif=pix.desktop
 video/webm=mpv.desktop
-image/webp=org.gnome.Loupe.desktop
+image/webp=pix.desktop
 application/pdf=org.gnome.Evince.desktop
-text/html=firefox.desktop
+text/html=org.x.editor.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
-application/xhtml+xml=firefox.desktop
+application/xhtml+xml=org.x.editor.desktop
+application/xml=org.x.editor.desktop
