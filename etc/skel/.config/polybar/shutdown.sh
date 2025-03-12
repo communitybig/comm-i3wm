@@ -2,7 +2,7 @@
 
 yad --question \
   --title="Shutdown" \
-  --text="<b>System shutdown in 30 seconds.</b>" \
+  --text="<b>Confirm shutdown?</b>" \
   --button="Cancel:1" \
   --button="Confirm:0" \
   --timeout=30 \

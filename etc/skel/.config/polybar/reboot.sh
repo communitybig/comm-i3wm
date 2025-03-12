@@ -2,7 +2,7 @@
 
 yad --question \
   --title="Reboot" \
-  --text="<b>Reboot in 30 seconds.</b>" \
+  --text="<b>Confirm reboot?</b>" \
   --button="Cancel:1" \
   --button="Confirm:0" \
   --timeout=30

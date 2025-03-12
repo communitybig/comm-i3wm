@@ -2,7 +2,7 @@
 
 yad --question \
   --title="Logout" \
-  --text="<b>Logout in 30 seconds.</b>" \
+  --text="<b>Confirm logout?</b>" \
   --button="Cancel:1" \
   --button="Confirm:0" \
   --timeout=30
