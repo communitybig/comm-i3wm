@@ -89,23 +89,25 @@ format-volume = <label-volume>
 label-volume =  %percentage%%
 label-muted =  muted
 
+
 [module/logout]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = loginctl terminate-user $USER  # Encerra sessão
+click-left = ~/.config/polybar/logout.sh
 background = ${colors.background}
 
 [module/reboot]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = systemctl reboot
+click-left = ~/.config/polybar/reboot.sh
 background = ${colors.background}
 
 [module/shutdown]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = systemctl poweroff
+click-left = ~/.config/polybar/shutdown.sh
 background = ${colors.background}
+
