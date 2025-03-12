@@ -15,13 +15,15 @@ i3 ShortCuts
 
 Mod+Enter  → Open Terminal
 Mod+d      → Open Menu (rofi/dmenu)
+Mod+b → Open Browser
+Mod+t → Open Thunar
 Mod+Shift+q → Close App/Window
 Mod+1-9    → Alt Workspace
 Mod+Shift+1-9 → Move app/window to Workspace
 Mod+arrows → Alt Window
 Mod+Shift+arrows → Move Window
-Mod+v → Open app tilling vertical
-Mod+h → Open app tilling horizontal
+Mod+e → tilling vertical & horizontal
+Mod+w → tilling like tabs
 Mod+f → full screen/exit full screen
 Mod+Shift+p → Open power manager
 EOF
