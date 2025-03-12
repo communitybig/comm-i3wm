@@ -24,7 +24,7 @@ font-1 = "Symbols Nerd Font:size=12;3"
 
 modules-left = workspaces
 modules-center = date
-modules-right = i3-helper network battery volume logout reboot shutdown
+modules-right = updates i3-helper network battery volume logout reboot shutdown
 
 [module/workspaces]
 type = internal/i3
@@ -54,6 +54,14 @@ date = %d %b
 time = %H:%M
 
 label = %date%  %time%
+
+[module/updates]
+type = custom/script
+exec = ~/.config/polybar/updates-check.sh
+interval = 600
+click-left = ~/.config/polybar/updates-install.sh
+click-right = ~/.config/polybar/updates-check.sh check
+format-padding = 1
 
 [module/i3-helper]
 type = custom/text
