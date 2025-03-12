@@ -35,7 +35,7 @@ optdepends=(
 	imagemagick
 	jq
 	xclip
-	kitty
+	gnome-terminal
 	sync-gnome-theme-to-qt
 	blueberry
 	scrot
