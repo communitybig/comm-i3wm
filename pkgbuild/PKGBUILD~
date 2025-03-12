@@ -107,7 +107,6 @@ optdepends=(
 	b43-fwcutter
 	glxinfo
 	gnome-disk-utility
-    simplescreenrecorder
 	#packages community
 	auto-tweaks-browser         # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
 	big-mount
