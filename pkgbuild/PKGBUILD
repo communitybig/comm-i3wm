@@ -116,8 +116,9 @@ optdepends=(
 	#biglinux-driver-manager
 	#biglinux-noise-reduction-pipewire
 	#bigcontrolcenter-base      # Base files and libs to bigcontrolcenter interfaces
-	#big-store                  # A friendly interface using bigbashview
-	#comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
+	big-store                  # A friendly interface using bigbashview
+    big-preload	
+    #comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
 	#drivers de vídeo
 	mhwd
 	mhwd-db
