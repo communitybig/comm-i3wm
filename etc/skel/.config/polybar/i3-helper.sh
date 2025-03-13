@@ -15,17 +15,18 @@ i3 ShortCuts
 
 Mod+Enter  → Open Terminal
 Mod+d      → Open Menu (rofi/dmenu)
-Mod+b → Open Browser
-Mod+t → Open Thunar
+Mod+b      → Open Browser
+Mod+t      → Open Thunar
 Mod+Shift+q → Close App/Window
-Mod+1-9    → Alt Workspace
+Mod+1-9     → Alt Workspace
 Mod+Shift+1-9 → Move app/window to Workspace
-Mod+arrows → Alt Window
+Mod+arrows  → Alt Window
 Mod+Shift+arrows → Move Window
-Mod+e → tilling vertical & horizontal
-Mod+w → tilling like tabs
-Mod+f → full screen/exit full screen
+Mod+e      → Tilling vertical & horizontal
+Mod+w      → Tilling like tabs
+Mod+f      → Full screen/exit full screen
 Mod+Shift+p → Open power manager
+Mod+Shift+r → Restart i3
 EOF
 
 # Define o tema escuro (para ajudar com o tema Nordic-darker)
