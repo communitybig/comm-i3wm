@@ -5,7 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/.config/polybar/updates-check.sh check
+ExecStart=/bin/bash -c '%h/.config/polybar/updates-check.sh check'
 
 [Install]
 WantedBy=default.target
