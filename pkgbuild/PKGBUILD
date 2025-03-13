@@ -85,7 +85,7 @@ optdepends=(
 	libpipewire
 	lib32-libpipewire
 	#lib32-pipewire-jack
-	pipewire-biglinux-config-git
+	#pipewire-biglinux-config-git
 	gst-plugin-pipewire
 	manjaro-pipewire
 	pcaudiolib
