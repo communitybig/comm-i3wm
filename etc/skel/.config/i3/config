@@ -295,7 +295,7 @@ exec_always xinput set-prop "ELAN0501:00 04F3:3019 Touchpad" "libinput Accel Spe
 
 #Keyboard Layout
 exec_always setxkbmap -layout br,us,ru
-exec_always setxkbmap -option "grp:win_space_toggle"
+bindsym $mod+space exec --no-startup-id "xdotool key Super_L+space"
 
 #Applications startup
 exec --no-startup-id telegram-desktop
