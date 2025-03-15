@@ -5,9 +5,12 @@ yad --question \
   --text="<b>Confirm logout?</b>" \
   --button="Cancel:1" \
   --button="Confirm:0" \
-  --timeout=30
+  --timeout=30 \
+  --timeout-indicator=top
 
 case $? in
-  0) i3-msg exit ;;
-  1|*) exit 0 ;;
+  0) i3-msg exit ;;     # Confirm
+  1) exit 0 ;;          # Cancel
+  70) i3-msg exit ;;    # Timeout (execute logout)
+  *) exit 0 ;;          # Window closed
 esac
