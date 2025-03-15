@@ -6,4 +6,4 @@ Target = *
 [Action]
 Description = Count the number of packages ready for upgrade.
 When = PostTransaction
-Exec = sh -c '/usr/bin/checkupdates | wc -l > /var/local/countupdates/count'
+Exec = sh -c '/usr/bin/checkupdates | wc -l 
