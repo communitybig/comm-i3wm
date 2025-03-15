@@ -57,10 +57,10 @@ label = %date%  %time%
 
 [module/updates]
 type = custom/script
-exec = ~/.config/polybar/updates-check.sh
+exec = ~/.config/polybar/count-updates.sh
 interval = 600
-click-left = ~/.config/polybar/updates-install.sh
-click-right = ~/.config/polybar/updates-check.sh check
+#click-left = ~/.config/polybar/updates-install.sh
+#click-right = ~/.config/polybar/updates-check.sh check
 format-padding = 1
 
 [module/i3-helper]

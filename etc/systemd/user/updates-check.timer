@@ -1,10 +1,9 @@
 [Unit]
-Description=Verifica atualizações do sistema a cada hora
+Description=Count how many updates are available
 
 [Timer]
-OnBootSec=1min
-OnUnitActiveSec=1h
-Persistent=true
+OnCalendar=hourly
+Unit=checkupdates.service
 
 [Install]
 WantedBy=timers.target
