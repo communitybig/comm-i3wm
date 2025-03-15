@@ -2,7 +2,7 @@
 Description=Count how many updates are available
 
 [Timer]
-OnCalendar=hourly
+OnCalendar=minute
 Unit=checkupdates.service
 
 [Install]
