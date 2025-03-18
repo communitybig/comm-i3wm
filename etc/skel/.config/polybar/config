@@ -58,7 +58,7 @@ label = %date%  %time%
 [module/updates]
 type = custom/script
 exec = ~/.config/polybar/updates-check.sh
-interval = 500
+interval = 5
 click-left = ~/.config/polybar/updates-install.sh
 click-right = ~/.config/polybar/updates-check.sh check
 format-padding = 1
