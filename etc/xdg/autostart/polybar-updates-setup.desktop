@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Polybar Updates Setup
+Comment=Configure polybar updates module for first run
+Exec=/usr/lib/biglinux/setup-polybar-updates.sh
+Terminal=false
+Hidden=false
+X-GNOME-Autostart-enabled=true

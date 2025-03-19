@@ -2,7 +2,7 @@
 background = #2E3440
 background-alt = #3B4252
 foreground = #D8DEE9
-primary = #81A1C1
+primary = #5F9EA0
 accent = #00BFFF
 alert = #BF616A
 
@@ -24,7 +24,7 @@ font-1 = "Symbols Nerd Font:size=12;3"
 
 modules-left = workspaces
 modules-center = date
-modules-right = i3-helper network battery volume logout reboot shutdown
+modules-right = updates i3-helper network battery volume logout reboot shutdown
 
 [module/workspaces]
 type = internal/i3
@@ -54,6 +54,14 @@ date = %d %b
 time = %H:%M
 
 label = %date%  %time%
+
+[module/updates]
+type = custom/script
+exec = ~/.config/polybar/updates-check.sh
+interval = 5
+click-left = ~/.config/polybar/updates-install.sh
+click-right = ~/.config/polybar/updates-check.sh check
+format-padding = 1
 
 [module/i3-helper]
 type = custom/text
@@ -89,23 +97,25 @@ format-volume = <label-volume>
 label-volume =  %percentage%%
 label-muted =  muted
 
+
 [module/logout]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = loginctl terminate-user $USER  # Encerra sessão
+click-left = ~/.config/polybar/logout.sh
 background = ${colors.background}
 
 [module/reboot]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = systemctl reboot
+click-left = ~/.config/polybar/reboot.sh
 background = ${colors.background}
 
 [module/shutdown]
 type = custom/text
 content = "  "
 content-foreground = ${colors.accent}
-click-left = systemctl poweroff
+click-left = ~/.config/polybar/shutdown.sh
 background = ${colors.background}
+

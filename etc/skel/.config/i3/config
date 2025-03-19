@@ -115,7 +115,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+f floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+F1 focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -124,7 +124,10 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # Open browser
-bindsym \$mod+b exec firefox
+bindsym $mod+b exec firefox
+
+# Open Thunar
+bindsym $mod+t exec thunar
 
 
 # Define names for default workspaces for which we configure key bindings later on.
@@ -291,8 +294,8 @@ exec_always xinput set-prop "ELAN0501:00 04F3:3019 Touchpad" "libinput Accel Spe
 #ELAN0501:00 04F3:3019 Touchpad
 
 #Keyboard Layout
-exec_always setxkbmap -layout us,ru
-exec_always setxkbmap -option "grp:win_space_toggle"
+exec_always setxkbmap -layout br,us,ru
+bindsym $mod+space exec --no-startup-id "xdotool key Super_L+space"
 
 #Applications startup
 exec --no-startup-id telegram-desktop

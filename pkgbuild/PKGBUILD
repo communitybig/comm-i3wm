@@ -35,7 +35,7 @@ optdepends=(
 	imagemagick
 	jq
 	xclip
-	kitty
+	gnome-terminal
 	sync-gnome-theme-to-qt
 	blueberry
 	scrot
@@ -85,7 +85,7 @@ optdepends=(
 	libpipewire
 	lib32-libpipewire
 	#lib32-pipewire-jack
-	pipewire-biglinux-config-git
+	#pipewire-biglinux-config-git
 	gst-plugin-pipewire
 	manjaro-pipewire
 	pcaudiolib
@@ -107,6 +107,7 @@ optdepends=(
 	b43-fwcutter
 	glxinfo
 	gnome-disk-utility
+    simplescreenrecorder
 	#packages community
 	auto-tweaks-browser         # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
 	big-mount
@@ -115,8 +116,9 @@ optdepends=(
 	#biglinux-driver-manager
 	#biglinux-noise-reduction-pipewire
 	#bigcontrolcenter-base      # Base files and libs to bigcontrolcenter interfaces
-	#big-store                  # A friendly interface using bigbashview
-	#comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
+	big-store                  # A friendly interface using bigbashview
+    big-preload	
+    #comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
 	#drivers de vídeo
 	mhwd
 	mhwd-db
