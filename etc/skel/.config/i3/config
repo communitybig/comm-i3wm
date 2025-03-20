@@ -295,7 +295,7 @@ exec_always xinput set-prop "ELAN0501:00 04F3:3019 Touchpad" "libinput Accel Spe
 
 #Keyboard Layout
 exec_always setxkbmap -layout br,us,ru
-bindsym $mod+space exec --no-startup-id "xdotool key Super_L+space"
+bindsym $mod+space exec --no-startup-id "setxkbmap -query | grep -q 'layout:\s*br' && setxkbmap us || (setxkbmap -query | grep -q 'layout:\s*us' && setxkbmap ru || setxkbmap br)"
 
 #Applications startup
 exec --no-startup-id telegram-desktop
