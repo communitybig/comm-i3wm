@@ -1,5 +1,5 @@
 # Maintainer: Narayan Silva<narayanlimasilva@gmail.com>
-# Contributorr: Vilmar Catafesta <vcatafesta@gmail.com>
+# Contributor: Vilmar Catafesta <vcatafesta@gmail.com>
 
 pkgname=comm-i3wm
 pkgdesc="Meta package for i3wm"
@@ -108,6 +108,7 @@ optdepends=(
 	glxinfo
 	gnome-disk-utility
     simplescreenrecorder
+    python-pywal
 	#packages community
 	auto-tweaks-browser         # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
 	big-mount
