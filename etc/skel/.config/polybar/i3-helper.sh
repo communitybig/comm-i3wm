@@ -31,7 +31,7 @@ Mod+arrows  → Alt Window
 
 Mod+Shift+arrows → Move Window
 
-Mod+e      → Tilling vertical & horizontal
+Mod+e      → Tilling vertical/horizontal
 
 Mod+w      → Tilling like tabs
 
