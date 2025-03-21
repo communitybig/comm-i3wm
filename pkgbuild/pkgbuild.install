@@ -40,7 +40,7 @@ msg() {
 	echo -e "${green}==>[${pkgname}] ${bold}${yellow}${msg}${reset}" >&2
 }
 
-log_ok() {  echo -e "  ${TICK} ${*}${reset}"; }
+log_ok() { echo -e "  ${TICK} ${*}${reset}"; }
 log_err() { echo -e "  ${CROSS} ${*}${reset}"; }
 
 die() {
@@ -48,7 +48,7 @@ die() {
 	shift
 	#printf "  %b %s\\n" "${CROSS}" "${red}${msg}${reset}"
 	echo -e "  ${CROSS} ${red}${msg}${reset}"
-  sh_restoring_lock
+	sh_restoring_lock
 	exit 1
 }
 
@@ -64,20 +64,20 @@ sh_load_optdepends() {
 }
 
 sh_restoring_lock() {
-  msg "Restauring pacman lock: /var/lib/pacman/db.lck"
-  touch /var/lib/pacman/db.lck &>/dev/null
+	msg "Restauring pacman lock: /var/lib/pacman/db.lck"
+	touch /var/lib/pacman/db.lck &>/dev/null
 }
 
 sh_check_package_exist() {
 	local pkg
 	for pkg in "${OPTDEPENDS[@]}"; do
-    if ! pacman -Qs "$pkg" &>/dev/null; then
-  		if ! pacman -Ss "^$pkg$" &>/dev/null; then
-	  	  die "Fatal: package '$pkg' not exist in repo"
-		  fi
+		if ! pacman -Qs "$pkg" &>/dev/null; then
+			if ! pacman -Ss "^$pkg$" &>/dev/null; then
+				die "Fatal: package '$pkg' not exist in repo"
+			fi
 		fi
-    log_ok "Check: ${cyan}$pkg"
-  done
+		log_ok "Check: ${cyan}$pkg"
+	done
 }
 
 sh_start_dbus_in_chroot() {
@@ -262,8 +262,8 @@ EOF
 		update-grub &>/dev/null
 	fi
 
-  # Restauring pacman lock: /var/lib/pacman/db.lck
-  sh_restoring_lock
+	# Restauring pacman lock: /var/lib/pacman/db.lck
+	sh_restoring_lock
 
 	if ! $IS_UPGRADE; then
 		msg "Installation complete. Rebooting in 10 seconds..."

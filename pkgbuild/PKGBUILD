@@ -14,6 +14,7 @@ depends=(
 	i3-wm
 )
 optdepends=(
+	webkit2gtk # Web content engine for GTK
 	#'go'
 	#'base-devel'
 	#btop
@@ -107,19 +108,19 @@ optdepends=(
 	b43-fwcutter
 	glxinfo
 	gnome-disk-utility
-    simplescreenrecorder
-    python-pywal
+	simplescreenrecorder
+	python-pywal
 	#packages community
-	auto-tweaks-browser         # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
+	auto-tweaks-browser # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
 	big-mount
-	comm-base-config            # Package configuration BASE
+	comm-base-config # Package configuration BASE
 	#comm-webapps
 	#biglinux-driver-manager
 	#biglinux-noise-reduction-pipewire
 	#bigcontrolcenter-base      # Base files and libs to bigcontrolcenter interfaces
-	big-store                  # A friendly interface using bigbashview
-    big-preload	
-    #comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
+	big-store # A friendly interface using bigbashview
+	big-preload
+	#comm-restore-config        # Central de controle para restaurar configurações de ambiente e aplicativos
 	#drivers de vídeo
 	mhwd
 	mhwd-db
@@ -139,7 +140,7 @@ optdepends=(
 	lib32-vulkan-intel
 	vulkan-radeon
 	lib32-vulkan-radeon
-    mesa
+	mesa
 	lib32-mesa
 	# X11 Server and components
 	xorg-server
@@ -172,7 +173,7 @@ optdepends=(
 	lightdm-slick-greeter
 	lightdm-settings
 	webkit2gtk
-    arandr
+	arandr
 	# Extra
 	clang
 	gnu-free-fonts
@@ -196,7 +197,7 @@ optdepends=(
 	pix
 	mpv
 	pantheon-calendar
-	
+
 )
 
 if [ -e "${pkgname}.install" ]; then
@@ -208,8 +209,8 @@ fi
 package() {
 	cd "${srcdir}/${pkgname}"
 
-  mkdir -p "${pkgdir}/usr/share/${pkgname}"
-  printf "%s\n" "${optdepends[@]}" > "${pkgdir}/usr/share/${pkgname}/optdepends"
+	mkdir -p "${pkgdir}/usr/share/${pkgname}"
+	printf "%s\n" "${optdepends[@]}" >"${pkgdir}/usr/share/${pkgname}/optdepends"
 
 	# Determine the correct source directory
 	if [ -d "${pkgname}" ]; then
