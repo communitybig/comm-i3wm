@@ -14,7 +14,6 @@ depends=(
 	i3-wm
 )
 optdepends=(
-	webkit2gtk # Web content engine for GTK
 	#'go'
 	#'base-devel'
 	#btop
