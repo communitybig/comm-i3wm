@@ -1,0 +1,2 @@
+! Inclua este arquivo para usar com pywal
+#include ".cache/wal/colors.Xresources"
