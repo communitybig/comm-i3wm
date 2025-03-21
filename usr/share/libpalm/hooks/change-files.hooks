@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = comm-i3
+Target = lightdm-slick-greeter
+
+[Action]
+Description = Restoring custom nano configuration...
+When = PostTransaction
+Exec = /usr/share/libalpm/scripts/change-files
