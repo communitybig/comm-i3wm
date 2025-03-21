@@ -2,7 +2,7 @@
 Operation = Install
 Operation = Upgrade
 Type = Package
-Target = comm-i3
+Target = comm-i3wm
 Target = lightdm-slick-greeter
 
 [Action]
