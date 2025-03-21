@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Restaura o último tema ou aplica um novo com uma imagem específica
-wal -R || wal -i "/usr/share/backgrounds/owl-main.jpg"
+# Pega o wallpaper atual do nitrogen
+WALLPAPER=$(grep -oP "file=\K.*" ~/.config/nitrogen/bg-saved.cfg)
 
-# Recarrega o i3 para aplicar as cores
+# Aplica o tema pywal com o wallpaper atual
+wal -i "$WALLPAPER"
+
+# Recarrega o i3
 i3-msg reload

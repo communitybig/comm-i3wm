@@ -63,6 +63,9 @@ client.urgent           $urgent $urgent $fg  $urgent    $urgent
 client.placeholder      $bg    $bg    $fg    $bg        $bg
 client.background       $bg
 
+#executar pywal ao iniciar
+exec_always --no-startup-id ~/.config/i3/pywal.sh
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
