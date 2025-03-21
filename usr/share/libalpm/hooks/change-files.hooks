@@ -6,6 +6,6 @@ Target = comm-i3wm
 Target = lightdm-slick-greeter
 
 [Action]
-Description = Restoring custom nano configuration...
+Description = Instalando configuração personalizada do slick-greeter...
 When = PostTransaction
 Exec = /usr/share/libalpm/scripts/change-files

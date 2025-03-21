@@ -1,10 +1,36 @@
 #!/usr/bin/env bash
 
-# Check if /etc/lightdm/slick-greeter.conf exists
+# Garante que o diretório existe
+if [ ! -d /etc/lightdm ]; then
+    mkdir -p /etc/lightdm
+fi
+
+# Verifica se o arquivo personalizado existe
+if [ ! -f /etc/lightdm/slick-greeter.conf.big ]; then
+    echo "Arquivo personalizado não encontrado: /etc/lightdm/slick-greeter.conf.big"
+    exit 1
+fi
+
+# Faz backup do arquivo original se existir
 if [ -f /etc/lightdm/slick-greeter.conf ]; then
-    # If it exists, create a backup
+    echo "Fazendo backup de /etc/lightdm/slick-greeter.conf para /etc/lightdm/slick-greeter.conf.bak"
     cp -f /etc/lightdm/slick-greeter.conf /etc/lightdm/slick-greeter.conf.bak
 fi
 
-# Copy the custom configuration file
+# Copia o arquivo personalizado
+echo "Instalando configuração personalizada do slick-greeter"
 cp -f /etc/lightdm/slick-greeter.conf.big /etc/lightdm/slick-greeter.conf
+
+# Verifica se a cópia foi bem-sucedida
+if [ $? -eq 0 ]; then
+    echo "Configuração personalizada do slick-greeter instalada com sucesso"
+else
+    echo "Erro ao instalar configuração personalizada do slick-greeter"
+    exit 1
+fi
+
+# Atualizando permissões para garantir que o LightDM possa ler o arquivo
+chown root:root /etc/lightdm/slick-greeter.conf
+chmod 644 /etc/lightdm/slick-greeter.conf
+
+exit 0
