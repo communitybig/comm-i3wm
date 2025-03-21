@@ -26,5 +26,5 @@ shopt -s checkwinsize
 
 #initialize fastfetch
 fastfetch
-wal -i "/usr/share/backgrounds/owl-main.jpg"
+
 
