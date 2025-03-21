@@ -124,8 +124,9 @@ post_install() {
 		lib32-vulkan-mesa-layers
 	)
 
-	synchronizing_database() {
-		pacman -Sy --quiet --noconfirm &>/dev/null
+  synchronizing_database() {
+    #pacman -Syu --quiet --noconfirm 1>/dev/null
+    pacman -Sy --quiet --noconfirm &>/dev/null
 	}
 
 	install_packages() {
@@ -218,7 +219,7 @@ EOF
 
 	if ! $IS_UPGRADE; then
 		msg "Enabling ${DM^}..."
-		if ! systemctl enable ${DM} &>/dev/null; then
+		if ! systemctl enable ${DM} 1>/dev/null; then
 			msg "${red}Error: It went wrong when activating ${DM^}"
 		fi
 	fi
