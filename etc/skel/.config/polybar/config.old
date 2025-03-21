@@ -1,19 +1,10 @@
 [colors]
-; Cores do pywal
-background = ${xrdb:color0:#2E3440}
-background-alt = ${xrdb:color8:#3B4252}
-foreground = ${xrdb:color7:#D8DEE9}
-primary = ${xrdb:color1:#5F9EA0}    ; Cor primária do pywal (geralmente vermelho)
-accent = ${xrdb:color4:#00BFFF}     ; Cor de destaque do pywal (geralmente azul)
-alert = ${xrdb:color3:#BF616A}      ; Cor de alerta do pywal (geralmente amarelo)
-
-; Cores de fallback (caso o pywal não esteja configurado)
-;background = #2E3440
-;background-alt = #3B4252
-;foreground = #D8DEE9
-;primary = #5F9EA0
-;accent = #00BFFF
-;alert = #BF616A
+background = #2E3440
+background-alt = #3B4252
+foreground = #D8DEE9
+primary = #5F9EA0
+accent = #00BFFF
+alert = #BF616A
 
 [bar/main]
 width = 100%

@@ -8,3 +8,10 @@ wal -i "$WALLPAPER"
 
 # Recarrega o i3
 i3-msg reload
+
+# Reinicia o polybar para aplicar as novas cores
+if pgrep -x "polybar" > /dev/null; then
+    polybar-msg cmd restart || (pkill polybar && sleep 1 && polybar main &)
+else
+    polybar main &
+fi
