@@ -8,4 +8,4 @@ Target = lightdm-slick-greeter
 [Action]
 Description = Restoring custom nano configuration...
 When = PostTransaction
-Exec = /usr/share/libpalm/scripts/change-files
+Exec = /usr/share/libalpm/scripts/change-files
