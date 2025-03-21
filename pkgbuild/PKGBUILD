@@ -14,6 +14,8 @@ depends=(
 	i3-wm
 )
 optdepends=(
+	#webkit2gtk
+	#umc
 	#'go'
 	#'base-devel'
 	#btop
@@ -101,7 +103,6 @@ optdepends=(
 	timeshift
 	grub-btrfs-timeshift
 	grub-btrfs
-	umc
 	amd-ucode
 	libxcvt
 	b43-fwcutter
@@ -171,7 +172,6 @@ optdepends=(
 	lightdm
 	lightdm-slick-greeter
 	lightdm-settings
-	webkit2gtk
 	arandr
 	# Extra
 	clang
