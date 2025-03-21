@@ -49,6 +49,20 @@ font pango:Open Sans Semibold 9
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Defina as cores de acordo com o pywal
+set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $bg i3wm.color2 #f0f0f0
+set_from_resource $focus i3wm.color3 #f0f0f0
+set_from_resource $urgent i3wm.color1 #f0f0f0
+
+# classe                 borda  fundo  texto  indicador  borda_filha
+client.focused          $focus $focus $fg    $focus     $focus
+client.focused_inactive $bg    $bg    $fg    $bg        $bg
+client.unfocused        $bg    $bg    $fg    $bg        $bg
+client.urgent           $urgent $urgent $fg  $urgent    $urgent
+client.placeholder      $bg    $bg    $fg    $bg        $bg
+client.background       $bg
+
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
