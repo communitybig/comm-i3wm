@@ -129,7 +129,8 @@ post_install() {
 	}
 
 	install_packages() {
-		pacman -S --quiet --noconfirm --needed --overwrite \* "$@" &>/dev/null
+#    pacman -S --quiet --noconfirm --needed --overwrite \* "$@" &>/dev/null
+    pacman -S --quiet --noconfirm --needed --overwrite \* "$@" 1>/dev/null
 	}
 
 	msg "Please wait, synchronizing databases..."
