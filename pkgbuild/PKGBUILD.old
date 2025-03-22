@@ -218,15 +218,7 @@ package() {
 	else
 		srcdir="${srcdir}/${pkgname}"
 	fi
-    
-    # Garanta que os diretórios existam
-    mkdir -p "${pkgdir}/etc/lightdm"
-    mkdir -p "${pkgdir}/usr/share/backgrounds"
-    
-    # Copie os arquivos necessários
-    install -Dm644 "${srcdir}/${pkgname}/etc/lightdm/slick-greeter.conf.big" "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
-    install -Dm644 "${srcdir}/${pkgname}/usr/share/backgrounds/lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
-    
+
 	# Install files
 	local dirs=("usr" "etc" "opt")
 	for dir in "${dirs[@]}"; do
