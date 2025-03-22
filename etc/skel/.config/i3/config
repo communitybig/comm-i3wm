@@ -344,3 +344,6 @@ exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 bindsym $mod+Shift+t exec --no-startup-id termite
 bindsym Ctrl+Mod1+t exec --no-startup-id termite
 bindsym $mod+l exec --no-startup-id sh $HOME/.config/i3/lock.sh suspend
+
+# Screen recording shortcut (toggle start/stop)
+bindsym $mod+o exec --no-startup-id ~/.config/i3/recorder.sh

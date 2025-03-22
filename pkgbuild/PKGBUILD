@@ -69,6 +69,7 @@ optdepends=(
 	oh-my-posh-bin
 	checkupdates-with-aur
 	unarchiver
+    7zip
 	imv
 	ffmpegthumbnailer
 	wireplumber
