@@ -218,7 +218,15 @@ package() {
 	else
 		srcdir="${srcdir}/${pkgname}"
 	fi
-
+    
+    # Garanta que os diretórios existam
+    mkdir -p "${pkgdir}/etc/lightdm"
+    mkdir -p "${pkgdir}/usr/share/backgrounds"
+    
+    # Copie os arquivos necessários
+    install -Dm644 "${srcdir}/${pkgname}/etc/lightdm/slick-greeter.conf.big" "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
+    install -Dm644 "${srcdir}/${pkgname}/usr/share/backgrounds/lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
+    
 	# Install files
 	local dirs=("usr" "etc" "opt")
 	for dir in "${dirs[@]}"; do
@@ -226,84 +234,6 @@ package() {
 			cp -a "${srcdir}/${dir}" "${pkgdir}/"
 		fi
 	done
-	
-	# Criar os diretórios necessários
-	mkdir -p "${pkgdir}/etc/lightdm"
-	mkdir -p "${pkgdir}/usr/share/backgrounds"
-	mkdir -p "${pkgdir}/usr/share/libalpm/scripts"
-	mkdir -p "${pkgdir}/usr/share/libalpm/hooks"
-	
-	# Instalar o arquivo de configuração do slick-greeter
-	echo "[Greeter]" > "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
-	echo "background=/usr/share/backgrounds/lightdm-default.jpg" >> "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
-	
-	# Verificar se há um wallpaper no repositório para copiar
-	if [ -f "${srcdir}/lightdm-default.jpg" ]; then
-		install -Dm644 "${srcdir}/lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
-	elif [ -f "lightdm-default.jpg" ]; then
-		install -Dm644 "lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
-	else
-		# Se não encontrar o wallpaper, cria um arquivo vazio como placeholder
-		# (você deve substituir isso por um wallpaper real posteriormente)
-		echo "Warning: Wallpaper não encontrado. Criando um placeholder."
-		touch "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
-	fi
-	
-	# Instalar o script e o hook
-	cat > "${pkgdir}/usr/share/libalpm/scripts/change-files" << 'EOF'
-#!/bin/bash
-
-# Diretórios
-configDir="/etc/lightdm"
-backupDir="/etc/lightdm/backup"
-
-# Arquivos
-configFile="${configDir}/slick-greeter.conf"
-backupFile="${backupDir}/slick-greeter.conf.original"
-customFile="${configDir}/slick-greeter.conf.big"
-
-# Criar diretório de backup se não existir
-mkdir -p "${backupDir}"
-
-# Fazer backup do arquivo original se existir e ainda não tiver backup
-if [ -f "${configFile}" ] && [ ! -f "${backupFile}" ]; then
-    cp "${configFile}" "${backupFile}"
-    echo "Backup do arquivo original criado em: ${backupFile}"
-fi
-
-# Verificar se o arquivo personalizado existe
-if [ -f "${customFile}" ]; then
-    # Copiar o arquivo personalizado
-    cp "${customFile}" "${configFile}"
-    echo "Configuração personalizada do slick-greeter aplicada com sucesso"
-    
-    # Definir permissões corretas
-    chmod 644 "${configFile}"
-    chown root:root "${configFile}"
-else
-    echo "ERRO: Arquivo personalizado não encontrado em ${customFile}"
-    exit 1
-fi
-
-exit 0
-EOF
-
-	chmod 755 "${pkgdir}/usr/share/libalpm/scripts/change-files"
-	
-	cat > "${pkgdir}/usr/share/libalpm/hooks/change-files.hook" << 'EOF'
-[Trigger]
-Type = Package
-Operation = Install
-Operation = Upgrade
-Target = lightdm-slick-greeter
-Target = comm-i3wm
-
-[Action]
-Description = Configurando wallpaper personalizado no LightDM Slick Greeter
-When = PostTransaction
-Exec = /usr/share/libalpm/scripts/change-files
-NeedsTargets
-EOF
 
 	# Install license file if present
 	if [ -f "LICENSE" ]; then
