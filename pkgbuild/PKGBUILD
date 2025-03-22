@@ -8,7 +8,7 @@ pkgrel=$(date +%H%M)
 arch=('any')
 license=('MIT')
 url="https://github.com/communitybig/${pkgname}"
-source=("git+${url}.git")
+source=("git+${url}.git","configure-btop.sh")
 md5sums=('SKIP')
 depends=(
 	i3-wm
@@ -315,4 +315,8 @@ EOF
 	if [ -f "README.md" ]; then
 		install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
 	fi
+    
+    # Copiar o script para o diretório adequado
+    install -Dm755 "${srcdir}/configure-btop.sh" "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh"
+
 }

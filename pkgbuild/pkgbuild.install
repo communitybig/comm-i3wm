@@ -341,9 +341,17 @@ EOF
 	else
 		msg "Upgrade complete."
 	fi
+
+    # Executar o script de configuração do btop
+    /usr/share/comm-i3wm/scripts/configure-btop.sh
+
 }
 
 post_upgrade() {
 	IS_UPGRADE=true
 	post_install
+    
+    # Executar o script de configuração do btop
+    /usr/share/comm-i3wm/scripts/configure-btop.sh
+
 }
