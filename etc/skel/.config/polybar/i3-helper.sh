@@ -42,6 +42,8 @@ Mod+Shift+p → Open power manager
 Mod+Shift+r → Restart i3
 
 Mod+space   → Change keyboard layout (default options: br, us, ru)
+
+Mod+o      → Start/stop video recording.
 EOF
 
 # Define o tema escuro (para ajudar com o tema Nordic-darker)

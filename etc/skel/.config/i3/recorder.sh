@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 
-# Diretório para salvar as gravações
+# Directory to save recordings
 DIR="$(xdg-user-dir VIDEOS)"
 [[ ! -d "$DIR" ]] && mkdir -p "$DIR"
 
-# Arquivo para armazenar temporariamente o nome do arquivo de gravação
+# Files to temporarily store recording filename and status
 TEMP_FILE="/tmp/ffmpeg-recorder-filename"
 STATUS_FILE="/tmp/ffmpeg-recorder-status"
 
-# Função de limpeza para parar a gravação e converter o vídeo
+# Function to stop recording and convert video
 stop_recording() {
     if pgrep -x "ffmpeg" > /dev/null; then
-        # Mata o processo ffmpeg com SIGINT para finalizar corretamente
+        # Kill ffmpeg process with SIGINT to properly finalize
         pkill --signal SIGINT ffmpeg
-        notify-send "📹 Gravação encerrada" "Processando o vídeo..."
+        notify-send "📹 Recording stopped" "Processing video..."
         
-        # Espera o ffmpeg finalizar completamente
+        # Wait for ffmpeg to completely finish
         while pgrep -x "ffmpeg" > /dev/null; do
             sleep 0.5
         done
@@ -24,75 +24,75 @@ stop_recording() {
             MKV_FILE=$(cat "$TEMP_FILE")
             MP4_FILE="${MKV_FILE%.mkv}.mp4"
         else
-            notify-send "❌ Erro" "Arquivo de gravação não encontrado!"
+            notify-send "❌ Error" "Recording file not found!"
             rm -f "$STATUS_FILE"
             exit 1
         fi
 
         if [[ -f "$MKV_FILE" ]]; then
-            notify-send "📦 Compactando vídeo..." "Aguarde..."
+            notify-send "📦 Compressing video..." "Please wait..."
             
-            # Converte o arquivo MKV para MP4 com melhor compressão
+            # Convert MKV file to MP4 with better compression
             ffmpeg -i "$MKV_FILE" -c:v libx264 -preset fast -crf 28 -pix_fmt yuv420p -threads "$(nproc)" -y "$MP4_FILE" && {
-                notify-send "✅ Vídeo salvo!" "Arquivo: $MP4_FILE"
-                echo "✔ Vídeo salvo: $MP4_FILE"
+                notify-send "✅ Video saved!" "File: $MP4_FILE"
+                echo "✔ Video saved: $MP4_FILE"
                 
-                # Copia o caminho do vídeo para a área de transferência
+                # Copy video path to clipboard
                 echo -n "$MP4_FILE" | xclip -selection clipboard
                 rm -f "$MKV_FILE"
             }
         else
-            notify-send "❌ Erro" "Arquivo de gravação não encontrado!"
+            notify-send "❌ Error" "Recording file not found!"
         fi
         
-        # Remove arquivos temporários
+        # Remove temporary files
         rm -f "$TEMP_FILE" "$STATUS_FILE"
     fi
 }
 
-# Verifica se já está gravando
+# Check if already recording
 if [[ -f "$STATUS_FILE" ]]; then
     stop_recording
     exit 0
 fi
 
-# Se não está gravando, mostra o menu de seleção do modo de gravação
-SELECTION=$(echo -e "🖥️ Gravar Tela Inteira\n🎥 Gravar Janela Ativa\n🎯 Gravar Seleção\n🎙️ Gravar Tela Com Áudio" | rofi -dmenu -i -no-show-icons -l 4 -width 30 -p "📹 Escolha o modo")
+# If not recording, show recording mode selection menu
+SELECTION=$(echo -e "🖥️ Record Full Screen\n🎥 Record Active Window\n🎯 Record Selection\n🎙️ Record Screen With Audio" | rofi -dmenu -i -no-show-icons -l 4 -width 30 -p "📹 Choose mode")
 
-# Função para iniciar gravação
+# Function to start recording
 start_recording() {
     local CMD="$1"
     local DESCRIPTION="$2"
     
-    # Cria o arquivo de status para indicar que está gravando
+    # Create status file to indicate recording is in progress
     touch "$STATUS_FILE"
     
-    # Executa o comando de gravação
+    # Execute recording command
     eval "$CMD" &
     
-    # Notifica o usuário
-    notify-send "📹 $DESCRIPTION" "Pressione '$mod + o' para parar."
+    # Notify user
+    notify-send "📹 $DESCRIPTION" "Press '$mod + o' to stop."
 }
 
 case "$SELECTION" in
-    "🖥️ Gravar Tela Inteira")
-        # Obtém informações da tela principal
+    "🖥️ Record Full Screen")
+        # Get main screen information
         RESOLUTION=$(xrandr --current | grep -oP '(?<=current ).*(?=,)' | awk '{print $1"x"$3}')
         
-        # Define o arquivo de saída
+        # Define output file
         MKV_FILE="$DIR/recording_$(date +'%Y-%m-%d_%H-%M-%S').mkv"
         echo "$MKV_FILE" > "$TEMP_FILE"
         
-        # Inicia a gravação da tela inteira
+        # Start full screen recording
         CMD="ffmpeg -f x11grab -video_size $RESOLUTION -i :0.0 -c:v libx264 -preset ultrafast -qp 0 \"$MKV_FILE\""
-        start_recording "$CMD" "Gravando Tela Inteira"
+        start_recording "$CMD" "Recording Full Screen"
         ;;
         
-    "🎥 Gravar Janela Ativa")
-        # Obtém o ID da janela ativa
+    "🎥 Record Active Window")
+        # Get active window ID
         WIN_ID=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')
         
-        # Obtém geometria da janela
+        # Get window geometry
         GEOM=$(xwininfo -id "$WIN_ID" | awk '
             /Absolute upper-left X:/ {x=$NF}
             /Absolute upper-left Y:/ {y=$NF}
@@ -102,49 +102,49 @@ case "$SELECTION" in
         
         IFS=',' read -r X Y W H <<< "$GEOM"
         
-        # Define o arquivo de saída
+        # Define output file
         MKV_FILE="$DIR/recording_$(date +'%Y-%m-%d_%H-%M-%S').mkv"
         echo "$MKV_FILE" > "$TEMP_FILE"
         
-        # Inicia a gravação da janela ativa
+        # Start active window recording
         CMD="ffmpeg -f x11grab -video_size ${W}x${H} -i :0.0+${X},${Y} -c:v libx264 -preset ultrafast -qp 0 \"$MKV_FILE\""
-        start_recording "$CMD" "Gravando Janela Ativa"
+        start_recording "$CMD" "Recording Active Window"
         ;;
         
-    "🎯 Gravar Seleção")
-        # Usa slop para permitir a seleção da área
+    "🎯 Record Selection")
+        # Use slop to allow area selection
         GEOM=$(slop -f "%x,%y,%w,%h")
         if [[ -z "$GEOM" ]]; then
-            notify-send "❌ Cancelado" "Nenhuma área selecionada."
+            notify-send "❌ Canceled" "No area selected."
             exit 0
         fi
         
         IFS=',' read -r X Y W H <<< "$GEOM"
         
-        # Define o arquivo de saída
+        # Define output file
         MKV_FILE="$DIR/recording_$(date +'%Y-%m-%d_%H-%M-%S').mkv"
         echo "$MKV_FILE" > "$TEMP_FILE"
         
-        # Inicia a gravação da área selecionada
+        # Start selected area recording
         CMD="ffmpeg -f x11grab -video_size ${W}x${H} -i :0.0+${X},${Y} -c:v libx264 -preset ultrafast -qp 0 \"$MKV_FILE\""
-        start_recording "$CMD" "Gravando Área Selecionada"
+        start_recording "$CMD" "Recording Selected Area"
         ;;
         
-    "🎙️ Gravar Tela Com Áudio")
-        # Obtém informações da tela principal
+    "🎙️ Record Screen With Audio")
+        # Get main screen information
         RESOLUTION=$(xrandr --current | grep -oP '(?<=current ).*(?=,)' | awk '{print $1"x"$3}')
         
-        # Define o arquivo de saída
+        # Define output file
         MKV_FILE="$DIR/recording_$(date +'%Y-%m-%d_%H-%M-%S').mkv"
         echo "$MKV_FILE" > "$TEMP_FILE"
         
-        # Inicia a gravação da tela com áudio
+        # Start screen recording with audio
         CMD="ffmpeg -f x11grab -video_size $RESOLUTION -i :0.0 -f pulse -i default -c:v libx264 -preset ultrafast -c:a aac -b:a 128k \"$MKV_FILE\""
-        start_recording "$CMD" "Gravando Tela Com Áudio"
+        start_recording "$CMD" "Recording Screen With Audio"
         ;;
         
     *)
-        notify-send "❌ Cancelado" "Nenhuma ação foi selecionada."
+        notify-send "❌ Canceled" "No action was selected."
         exit 0
         ;;
 esac
