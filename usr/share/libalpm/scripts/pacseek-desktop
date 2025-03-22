@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Check if /etc/nanorc exists
+if [ -f /usr/share/applications/org.moson.pacseek.desktop ]; then
+    # If it exists, create a backup
+    cp -f /usr/share/applications/org.moson.pacseek.desktop /usr/share/applications/org.moson.pacseek.desktop.bak
+fi
+
+# Copy the custom configuration file
+cp -f /usr/share/applications/org.moson.pacseek.big.desktop /usr/share/applications/org.moson.pacseek.desktop

@@ -63,8 +63,11 @@ client.urgent           $urgent $urgent $fg  $urgent    $urgent
 client.placeholder      $bg    $bg    $fg    $bg        $bg
 client.background       $bg
 
-#executar pywal ao iniciar
+# Launch pywal first
 exec_always --no-startup-id ~/.config/i3/pywal.sh
+
+# Launch polygar with delay
+exec_always --no-startup-id bash -c "sleep 3 && $HOME/.config/polybar/launch.sh"
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
@@ -337,9 +340,6 @@ exec --no-startup-id nitrogen --set-zoom-fill /usr/share/backgrounds/lightdm-def
 
 # Mount disks automatically
 #exec_always --no-startup-id ~/.config/i3/mount-disks.sh
-
-#Polybar
-exec_always --no-startup-id sh $HOME/.config/polybar/launch.sh
 
 bindsym $mod+Shift+t exec --no-startup-id termite
 bindsym Ctrl+Mod1+t exec --no-startup-id termite

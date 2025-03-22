@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Check if /etc/nanorc exists
+if [ -f /usr/share/applications/btop.desktop ]; then
+    # If it exists, create a backup
+    cp -f /usr/share/applications/btop.desktop /usr/share/applications/btop.desktop.bak
+fi
+
+# Copy the custom configuration file
+cp -f /usr/share/applications/btop.big.desktop /usr/share/applications/btop.desktop
