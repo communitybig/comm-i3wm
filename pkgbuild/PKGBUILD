@@ -8,7 +8,7 @@ pkgrel=$(date +%H%M)
 arch=('any')
 license=('MIT')
 url="https://github.com/communitybig/${pkgname}"
-source=("git+${url}.git" "configure-btop.sh")
+source=("git+${url}.git")
 md5sums=('SKIP')
 depends=(
 	i3-wm
@@ -316,7 +316,78 @@ EOF
 		install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
 	fi
     
-    # Copiar o script para o diretório adequado
-    install -Dm755 "${srcdir}/configure-btop.sh" "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh"
+     # Criar diretório para scripts
+    mkdir -p "${pkgdir}/usr/share/comm-i3wm/scripts"
+    
+    # Criar o script diretamente
+    cat > "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh" << 'EOF'
+#!/usr/bin/env bash
+
+# Função para configurar o btop
+configure_btop() {
+    echo "Configurando terminal para btop..."
+    
+    # Verificar se o arquivo btop.desktop existe
+    if [ -f /usr/share/applications/btop.desktop ]; then
+        # Backup do arquivo original (opcional)
+        cp -f /usr/share/applications/btop.desktop /usr/share/applications/btop.desktop.bak
+        
+        # Substituir conteúdo
+        cat > /usr/share/applications/btop.desktop << 'EOFINNER'
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=btop++
+GenericName=System Monitor
+GenericName[it]=Monitor di sistema
+Comment=Resource monitor that shows usage and stats for processor, memory, disks, network and processes
+Comment[it]=Monitoraggio delle risorse: mostra utilizzo e statistiche per CPU, dischi, rete e processi
+Icon=btop
+Exec=sh -c "if command -v gnome-terminal >/dev/null; then gnome-terminal -- btop; elif command -v kitty >/dev/null; then kitty btop; elif command -v konsole >/dev/null; then konsole -e btop; else x-terminal-emulator -e btop; fi"
+Terminal=false
+Categories=System;Monitor;ConsoleOnly;
+Keywords=system;process;task
+
+Actions=SoftwareRender;
+
+[Desktop Action SoftwareRender]
+Name=Software Render
+Exec=sh -c "if command -v gnome-terminal >/dev/null; then gnome-terminal -- env SoftwareRender=1 btop; elif command -v kitty >/dev/null; then kitty env SoftwareRender=1 btop; elif command -v konsole >/dev/null; then konsole -e env SoftwareRender=1 btop; else x-terminal-emulator -e env SoftwareRender=1 btop; fi"
+EOFINNER
+        echo "Configuração do btop concluída."
+    else
+        echo "Arquivo btop.desktop não encontrado. Instalando versão personalizada..."
+        # Criar o arquivo mesmo se não existir
+        cat > /usr/share/applications/btop.desktop << 'EOFINNER'
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=btop++
+GenericName=System Monitor
+GenericName[it]=Monitor di sistema
+Comment=Resource monitor that shows usage and stats for processor, memory, disks, network and processes
+Comment[it]=Monitoraggio delle risorse: mostra utilizzo e statistiche per CPU, dischi, rete e processi
+Icon=btop
+Exec=sh -c "if command -v gnome-terminal >/dev/null; then gnome-terminal -- btop; elif command -v kitty >/dev/null; then kitty btop; elif command -v konsole >/dev/null; then konsole -e btop; else x-terminal-emulator -e btop; fi"
+Terminal=false
+Categories=System;Monitor;ConsoleOnly;
+Keywords=system;process;task
+
+Actions=SoftwareRender;
+
+[Desktop Action SoftwareRender]
+Name=Software Render
+Exec=sh -c "if command -v gnome-terminal >/dev/null; then gnome-terminal -- env SoftwareRender=1 btop; elif command -v kitty >/dev/null; then kitty env SoftwareRender=1 btop; elif command -v konsole >/dev/null; then konsole -e env SoftwareRender=1 btop; else x-terminal-emulator -e env SoftwareRender=1 btop; fi"
+EOFINNER
+        echo "Versão personalizada do btop.desktop instalada."
+    fi
+}
+
+# Executar a função
+configure_btop
+EOF
+    
+    # Tornar o script executável
+    chmod 755 "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh"
 
 }
