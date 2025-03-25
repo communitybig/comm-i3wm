@@ -70,6 +70,7 @@ optdepends=(
 	checkupdates-with-aur
 	unarchiver
     7zip
+    xarchiver
 	imv
 	ffmpegthumbnailer
 	wireplumber
