@@ -38,6 +38,7 @@ optdepends=(
 	jq
 	xclip
 	gnome-terminal
+    xterm
 	sync-gnome-theme-to-qt
 	blueberry
 	scrot
