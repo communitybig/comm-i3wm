@@ -80,6 +80,7 @@ optdepends=(
 	qt5-quickcontrols2
 	flatpak
     pacseek
+    xorg-xinit
 	# Audio Dependencies
 	biglinux-meta-audio-config
 	portaudio
