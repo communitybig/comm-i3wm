@@ -199,8 +199,6 @@ optdepends=(
 	pix
 	mpv
 	pantheon-calendar
-    comm-improve-compatibility
-    comm-xfce-datetime
 
 )
 
