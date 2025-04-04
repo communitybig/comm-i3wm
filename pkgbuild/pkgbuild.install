@@ -35,6 +35,12 @@ declare WM='i3wm'
 declare pkgname=comm-"${WM}"
 declare servicesToEnable=("${DM}" avahi-daemon sshd cups bluetooth)
 declare servicesToDisable=(lxdm sddm gdm)
+# Pacotes do Chili para remover
+declare CHILI_PACKAGES=(
+    "chili-utils" 
+    "chili-datetime" 
+    "chili-iso2usb"
+)
 
 msg() {
 	local msg="$1"
@@ -58,7 +64,6 @@ sh_load_optdepends() {
 	if [[ -f "$info_file" && -r "$info_file" ]]; then
 		mapfile -t OPTDEPENDS <"$info_file"
 	else
-		msg "${red}FATAL: Something went wrong! File '$info_file' not found or without read permission."
 		msg "${red}FATAL: Something went wrong! File '$info_file' not found or without read permission."
 	fi
 }
@@ -97,6 +102,30 @@ sh_start_dbus_in_chroot() {
 		export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 		export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/run/dbus/system_bus_socket
 	fi
+}
+
+# Função para remover pacotes do Chili
+remove_chili_packages() {
+    msg "Checking for Chili packages to remove..."
+    local found_packages=()
+    
+    for pkg in "${CHILI_PACKAGES[@]}"; do
+        if pacman -Qq "$pkg" &>/dev/null; then
+            found_packages+=("$pkg")
+            log_ok "Found Chili package to remove: ${cyan}$pkg"
+        fi
+    done
+    
+    if ((${#found_packages[@]} > 0)); then
+        msg "Removing Chili packages: ${found_packages[*]}"
+        if pacman -Rns --noconfirm "${found_packages[@]}" &>/dev/null; then
+            log_ok "Successfully removed Chili packages"
+        else
+            log_err "Failed to remove some Chili packages, continuing anyway"
+        fi
+    else
+        msg "No Chili packages found to remove"
+    fi
 }
 
 # Função para manipular arquivos skel
@@ -181,6 +210,9 @@ setup_lightdm() {
 
 post_install() {
 	msg "Initializing system installation and configuration..."
+
+    # Remover pacotes do Chili logo no início
+    remove_chili_packages
 
 	sh_load_optdepends
 
@@ -364,6 +396,19 @@ post_install() {
     
     if [ -x "/usr/share/comm-i3wm/scripts/configure-pacseek.sh" ]; then
         /usr/share/comm-i3wm/scripts/configure-pacseek.sh
+    fi
+
+    # Verificar se algum pacote do Chili ainda está instalado e avisar
+    local remaining_chili=()
+    for pkg in "${CHILI_PACKAGES[@]}"; do
+        if pacman -Qq "$pkg" &>/dev/null; then
+            remaining_chili+=("$pkg")
+        fi
+    done
+    
+    if ((${#remaining_chili[@]} > 0)); then
+        msg "${yellow}Warning: Some Chili packages couldn't be removed: ${remaining_chili[*]}${reset}"
+        msg "${yellow}You may want to remove them manually after reboot.${reset}"
     fi
 
 	if ! $IS_UPGRADE; then
