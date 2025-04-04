@@ -182,12 +182,14 @@ optdepends=(
     'biglinux-webapps'
 )
 install=pkgbuild.install
+provides=('desktop-environment')
+conflicts=('comm-xfce' 'comm-plasma' 'comm-gnome' 'comm-deepin')
 
 package() {
 	cd "${srcdir}/${pkgname}"
 
-	mkdir -p "${pkgdir}/usr/share/${pkgname}"
-	printf "%s\n" "${optdepends[@]}" | sed 's/^.*: //' > "${pkgdir}/usr/share/${pkgname}/optdepends"
+	install -dm755 "${pkgdir}/usr/share/${pkgname}"
+	printf "%s\n" "${optdepends[@]}" >"${pkgdir}/usr/share/${pkgname}/optdepends"
 
 	# Determine the correct source directory
 	if [ -d "${pkgname}" ]; then
@@ -200,7 +202,6 @@ package() {
 	local dirs=("usr" "etc" "opt")
 	for dir in "${dirs[@]}"; do
 		if [ -d "${srcdir}/${dir}" ]; then
-			# Copiar apenas os arquivos específicos, não a estrutura inteira
 			mkdir -p "${pkgdir}/${dir}"
 			cp -a "${srcdir}/${dir}"/* "${pkgdir}/${dir}/"
 		fi
@@ -208,13 +209,19 @@ package() {
 	
 	# Criar os diretórios necessários
 	mkdir -p "${pkgdir}/etc/lightdm"
+	mkdir -p "${pkgdir}/etc/lightdm/lightdm.conf.d"
 	mkdir -p "${pkgdir}/usr/share/backgrounds"
 	mkdir -p "${pkgdir}/usr/share/libalpm/scripts"
 	mkdir -p "${pkgdir}/usr/share/libalpm/hooks"
 	
-	# Instalar o arquivo de configuração do slick-greeter com backup
+	# Instalar o arquivo de configuração do slick-greeter
 	echo "[Greeter]" > "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
 	echo "background=/usr/share/backgrounds/lightdm-default.jpg" >> "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
+	
+	# Configurar sessão padrão para i3
+	echo "[Seat:*]" > "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
+	echo "user-session=i3-comm" >> "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
+	chmod 644 "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
 	
 	# Verificar se há um wallpaper no repositório para copiar
 	if [ -f "${srcdir}/lightdm-default.jpg" ]; then
@@ -222,12 +229,11 @@ package() {
 	elif [ -f "lightdm-default.jpg" ]; then
 		install -Dm644 "lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
 	else
-		# Se não encontrar o wallpaper, usar um wallpaper padrão
-		msg "Warning: Default wallpaper not found. A placeholder will be installed."
+		# Se não encontrar o wallpaper, cria um arquivo vazio como placeholder
 		touch "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
 	fi
 	
-	# Instalar o script e o hook com permissões corretas
+	# Instalar o script e o hook
 	cat > "${pkgdir}/usr/share/libalpm/scripts/change-files" << 'EOF'
 #!/bin/bash
 
@@ -296,7 +302,7 @@ EOF
     # Criar diretório para scripts
     mkdir -p "${pkgdir}/usr/share/comm-i3wm/scripts"
     
-    # Criar o script diretamente
+    # Criar o script de configuração para btop
     cat > "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh" << 'EOF'
 #!/usr/bin/env bash
 
@@ -306,10 +312,8 @@ configure_btop() {
     
     # Verificar se o arquivo btop.desktop existe
     if [ -f /usr/share/applications/btop.desktop ]; then
-        # Backup do arquivo original
-        if [ ! -f /usr/share/applications/btop.desktop.original ]; then
-            cp -f /usr/share/applications/btop.desktop /usr/share/applications/btop.desktop.original
-        fi
+        # Backup do arquivo original (opcional)
+        cp -f /usr/share/applications/btop.desktop /usr/share/applications/btop.desktop.bak
         
         # Substituir conteúdo
         cat > /usr/share/applications/btop.desktop << 'EOFINNER'
@@ -335,7 +339,6 @@ EOFINNER
     else
         echo "Arquivo btop.desktop não encontrado. Instalando versão personalizada..."
         # Criar o arquivo mesmo se não existir
-        mkdir -p /usr/share/applications
         cat > /usr/share/applications/btop.desktop << 'EOFINNER'
 [Desktop Entry]
 Type=Application
@@ -376,10 +379,8 @@ configure_pacseek() {
     
     # Verificar se o arquivo pacseek.desktop existe
     if [ -f /usr/share/applications/org.moson.pacseek.desktop ]; then
-        # Backup do arquivo original
-        if [ ! -f /usr/share/applications/org.moson.pacseek.desktop.original ]; then
-            cp -f /usr/share/applications/org.moson.pacseek.desktop /usr/share/applications/org.moson.pacseek.desktop.original
-        fi
+        # Backup do arquivo original (opcional)
+        cp -f /usr/share/applications/org.moson.pacseek.desktop /usr/share/applications/org.moson.pacseek.desktop.bak
         
         # Substituir conteúdo
         cat > /usr/share/applications/org.moson.pacseek.desktop << 'EOFINNER'
@@ -407,9 +408,7 @@ EOFINNER
         
         # Verificar se existe em outra localização
         if [ -f /usr/share/applications/pacseek.desktop ]; then
-            if [ ! -f /usr/share/applications/pacseek.desktop.original ]; then
-                cp -f /usr/share/applications/pacseek.desktop /usr/share/applications/pacseek.desktop.original
-            fi
+            cp -f /usr/share/applications/pacseek.desktop /usr/share/applications/pacseek.desktop.bak
             
             cat > /usr/share/applications/pacseek.desktop << 'EOFINNER'
 [Desktop Entry]
@@ -434,7 +433,6 @@ EOFINNER
         else
             echo "Pacseek não parece estar instalado. Criando arquivo de desktop..."
             # Criar o arquivo de desktop para quando pacseek for instalado
-            mkdir -p /usr/share/applications
             cat > /usr/share/applications/org.moson.pacseek.desktop << 'EOFINNER'
 [Desktop Entry]
 
@@ -465,4 +463,16 @@ EOF
     
     # Tornar o script executável
     chmod 755 "${pkgdir}/usr/share/comm-i3wm/scripts/configure-pacseek.sh"
+    
+    # Adicionar arquivo para configuração de sessão do i3
+    mkdir -p "${pkgdir}/usr/share/xsessions"
+    cat > "${pkgdir}/usr/share/xsessions/i3-comm.desktop" << 'EOF'
+[Desktop Entry]
+Name=i3 Community
+Comment=improved dynamic tiling window manager
+Exec=i3
+TryExec=i3
+Type=Application
+Keywords=tiling;wm;windowmanager;window;manager;
+EOF
 }
