@@ -3,8 +3,8 @@
 
 pkgname=comm-i3wm
 pkgdesc="Meta package for i3wm"
-pkgver=1.0.0
-pkgrel=1
+pkgver=$(date +%Y%m%d)
+pkgrel=$(date +%H%M)
 arch=('any')
 license=('MIT')
 url="https://github.com/communitybig/${pkgname}"
@@ -14,181 +14,193 @@ depends=(
 	i3-wm
 )
 optdepends=(
-	'xdg-desktop-portal-gtk'
-	'xdg-desktop-portal'
-	'xdg-desktop-portal-xapp'
-	'eza'
-	'python-pip'
-	'python-gobject'
-	'python-screeninfo'
-	'tumbler'
-	'brightnessctl'
-	'nm-connection-editor'
-	'network-manager-applet'
-	'gtk4'
-	'gtk3'
-	'libadwaita'
-	'fuse2'
-	'imagemagick'
-	'jq'
-	'xclip'
-	'gnome-terminal'
-	'xterm'
-	'sync-gnome-theme-to-qt'
-	'blueberry'
-	'scrot'
-	'qt5ct'
-	'polkit-gnome'
-	'polkit'
-	'zsh'
-	'zsh-completions'
-	'fzf'
-	'pavucontrol'
-	'bigicons-papient'
-	'papirus-icon-theme'
-	'breeze-gtk'
-	'xcursor-breeze'
-	'nordic-darker-theme'
-	'xdg-user-dirs-gtk'
-	'gvfs'
-	'gvfs-afc'
-	'gvfs-mtp'
-	'gvfs-goa'
-	'gvfs-smb'
-	'gvfs-gphoto2'
-	'otf-font-awesome'
-	'ttf-fira-sans'
-	'ttf-fira-code'
-	'ttf-firacode-nerd'
-	'ttf-dejavu'
-	'ttf-nerd-fonts-symbols-with-biglinux'
-	'oh-my-posh-bin'
-	'checkupdates-with-aur'
-	'unarchiver'
-	'7zip'
-	'xarchiver'
-	'imv'
-	'ffmpegthumbnailer'
-	'wireplumber'
-	'qt5-svg'
-	'qt5-graphicaleffects'
-	'qt5-quickcontrols2'
-	'flatpak'
-	'pacseek'
-	'xorg-xinit'
-	'biglinux-meta-audio-config'
-	'portaudio'
-	'lib32-portaudio'
-	'pipewire-alsa'
-	'pipewire-pulse'
-	'lib32-pipewire'
-	'libpipewire'
-	'lib32-libpipewire'
-	'gst-plugin-pipewire'
-	'manjaro-pipewire'
-	'pcaudiolib'
-	'sox'
-	'libsndfile'
-	'lib32-libsndfile'
-	'xf86-input-elographics'
-	'xf86-input-evdev'
-	'xf86-input-libinput'
-	'xf86-input-vmmouse'
-	'xf86-input-void'
-	'timeshift'
-	'grub-btrfs-timeshift'
-	'grub-btrfs'
-	'amd-ucode'
-	'libxcvt'
-	'b43-fwcutter'
-	'glxinfo'
-	'gnome-disk-utility'
-	'simplescreenrecorder'
-	'python-pywal'
-	'auto-tweaks-browser'
-	'big-mount'
-	'comm-base-config'
-	'big-preload'
-	'mhwd'
-	'mhwd-db'
-	'mhwd-biglinux'
-	'mhwd-amdgpu'
-	'mhwd-nvidia'
-	'mhwd-ati'
-	'mhwd-nvidia-470xx'
-	'xf86-video-amdgpu'
-	'vulkan-mesa-layers'
-	'lib32-vulkan-mesa-layers'
-	'vulkan-headers'
-	'vulkan-tools'
-	'vulkan-icd-loader'
-	'lib32-vulkan-icd-loader'
-	'vulkan-intel'
-	'lib32-vulkan-intel'
-	'vulkan-radeon'
-	'lib32-vulkan-radeon'
-	'mesa'
-	'lib32-mesa'
-	'xorg-server'
-	'xorg-xinit'
-	'xorg-xrandr'
-	'xorg-xrdb'
-	'xorg-xbacklight'
-	'xorg-xinput'
-	'xorg-xkill'
-	'xorg-xprop'
-	'xorg-xhost'
-	'i3lock'
-	'i3status'
-	'dmenu'
-	'rofi'
-	'polybar'
-	'zenity'
-	'dunst'
-	'xkeyboard-config'
-	'nitrogen'
-	'wmutils'
-	'lxappearance'
-	'clipit'
-	'yad'
-	'xfce4-power-manager'
-	'lightdm'
-	'lightdm-slick-greeter'
-	'lightdm-settings'
-	'arandr'
-	'clang'
-	'gnu-free-fonts'
-	'harfbuzz-icu'
-	'hyphen'
-	'inotify-tools'
-	'inxi'
-	'libavif'
-	'lsof'
-	'ncdu'
-	'sysstat'
-	'firefox'
-	'thunar'
-	'thunar-archive-plugin'
-	'thunar-volman'
-	'evince'
-	'libreoffice-fresh'
-	'galculator'
-	'xed'
-	'pix'
-	'vlc'
-	'pantheon-calendar'
-	'comm-improve-compatibility'
-	'comm-xfce-datetime'
-    'biglinux-webapps'
+	xdg-desktop-portal-gtk
+	xdg-desktop-portal
+	xdg-desktop-portal-xapp
+	eza
+	python-pip
+	python-gobject
+	python-screeninfo
+	tumbler
+	brightnessctl
+	nm-connection-editor
+	network-manager-applet
+	gtk4
+	gtk3
+	libadwaita
+	fuse2
+	imagemagick
+	jq
+	xclip
+	gnome-terminal
+    xterm
+	sync-gnome-theme-to-qt
+	blueberry
+	scrot
+	qt5ct
+	polkit-gnome
+	polkit
+	zsh
+	zsh-completions
+	fzf
+	pavucontrol
+	bigicons-papient
+	papirus-icon-theme
+	breeze-gtk
+	xcursor-breeze
+	nordic-darker-theme
+	xdg-user-dirs-gtk
+	gvfs
+	gvfs-afc
+	gvfs-mtp
+	gvfs-goa
+	gvfs-smb
+	gvfs-gphoto2
+	otf-font-awesome
+	ttf-fira-sans
+	ttf-fira-code
+	ttf-firacode-nerd
+	ttf-dejavu
+	ttf-nerd-fonts-symbols-with-biglinux
+	oh-my-posh-bin
+	checkupdates-with-aur
+	unarchiver
+    7zip
+    xarchiver
+	imv
+	ffmpegthumbnailer
+	wireplumber
+	qt5-svg
+	qt5-graphicaleffects
+	qt5-quickcontrols2
+	flatpak
+    pacseek
+    xorg-xinit
+	# Audio Dependencies
+	biglinux-meta-audio-config
+	portaudio
+	lib32-portaudio
+	pipewire-alsa
+	pipewire-pulse
+	lib32-pipewire
+	libpipewire
+	lib32-libpipewire
+	gst-plugin-pipewire
+	manjaro-pipewire
+	pcaudiolib
+	sox
+	#Outros
+	libsndfile
+	lib32-libsndfile
+	xf86-input-elographics
+	xf86-input-evdev
+	xf86-input-libinput
+	xf86-input-vmmouse
+	xf86-input-void
+	timeshift
+	grub-btrfs-timeshift
+	grub-btrfs
+	amd-ucode
+	libxcvt
+	b43-fwcutter
+	glxinfo
+	gnome-disk-utility
+	simplescreenrecorder
+	python-pywal
+	#packages community
+	auto-tweaks-browser # Auto optimize brave, chromium, epiphany, falkon, firefox, google-chrome, opera and vivaldi
+	big-mount
+	biglinux-webapps
+	#drivers de vídeo
+	mhwd
+	mhwd-db
+	mhwd-biglinux
+	mhwd-amdgpu
+	mhwd-nvidia
+	mhwd-ati
+	mhwd-nvidia-470xx
+	xf86-video-amdgpu
+	vulkan-mesa-layers
+	lib32-vulkan-mesa-layers
+	vulkan-headers
+	vulkan-tools
+	vulkan-icd-loader
+	lib32-vulkan-icd-loader
+	vulkan-intel
+	lib32-vulkan-intel
+	vulkan-radeon
+	lib32-vulkan-radeon
+	mesa
+	lib32-mesa
+	# X11 Server and components
+	xorg-server
+	xorg-xinit
+	xorg-xrandr
+	xorg-xrdb
+	xorg-xbacklight
+	xorg-xinput
+	xorg-xkill
+	xorg-xprop
+	xorg-xhost
+	# i3wm e componentes para funcionamento e configuração
+	i3lock
+	i3status
+	dmenu
+	rofi
+	polybar
+	zenity
+	feh
+	dunst
+	xkeyboard-config
+	nitrogen
+	wmutils
+	lxappearance
+	clipit
+	yad
+	xfce4-power-manager
+	#tela de login
+	lightdm
+	lightdm-slick-greeter
+	lightdm-settings
+	arandr
+	# Extra
+	clang
+	gnu-free-fonts
+	harfbuzz-icu
+	hyphen
+	inotify-tools
+	inxi
+	libavif
+	lsof
+	ncdu
+	sysstat
+	chafa
+	firefox
+	thunar
+	thunar-archive-plugin
+	thunar-volman
+	evince
+	libreoffice-fresh
+	galculator
+	xed
+	pix
+	vlc
+	pantheon-calendar
+    comm-improve-compatibility
+    comm-xfce-datetime
+
 )
-install=pkgbuild.install
-provides=('desktop-environment')
-conflicts=('comm-xfce' 'comm-plasma' 'comm-gnome' 'comm-deepin')
+
+if [ -e "${pkgname}.install" ]; then
+	install=${pkgname}.install
+elif [ -e "pkgbuild.install" ]; then
+	install=pkgbuild.install
+fi
 
 package() {
 	cd "${srcdir}/${pkgname}"
 
-	install -dm755 "${pkgdir}/usr/share/${pkgname}"
+	mkdir -p "${pkgdir}/usr/share/${pkgname}"
 	printf "%s\n" "${optdepends[@]}" >"${pkgdir}/usr/share/${pkgname}/optdepends"
 
 	# Determine the correct source directory
@@ -202,14 +214,12 @@ package() {
 	local dirs=("usr" "etc" "opt")
 	for dir in "${dirs[@]}"; do
 		if [ -d "${srcdir}/${dir}" ]; then
-			mkdir -p "${pkgdir}/${dir}"
-			cp -a "${srcdir}/${dir}"/* "${pkgdir}/${dir}/"
+			cp -a "${srcdir}/${dir}" "${pkgdir}/"
 		fi
 	done
 	
 	# Criar os diretórios necessários
 	mkdir -p "${pkgdir}/etc/lightdm"
-	mkdir -p "${pkgdir}/etc/lightdm/lightdm.conf.d"
 	mkdir -p "${pkgdir}/usr/share/backgrounds"
 	mkdir -p "${pkgdir}/usr/share/libalpm/scripts"
 	mkdir -p "${pkgdir}/usr/share/libalpm/hooks"
@@ -218,11 +228,6 @@ package() {
 	echo "[Greeter]" > "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
 	echo "background=/usr/share/backgrounds/lightdm-default.jpg" >> "${pkgdir}/etc/lightdm/slick-greeter.conf.big"
 	
-	# Configurar sessão padrão para i3
-	echo "[Seat:*]" > "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
-	echo "user-session=i3-comm" >> "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
-	chmod 644 "${pkgdir}/etc/lightdm/lightdm.conf.d/50-i3.conf"
-	
 	# Verificar se há um wallpaper no repositório para copiar
 	if [ -f "${srcdir}/lightdm-default.jpg" ]; then
 		install -Dm644 "${srcdir}/lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
@@ -230,6 +235,8 @@ package() {
 		install -Dm644 "lightdm-default.jpg" "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
 	else
 		# Se não encontrar o wallpaper, cria um arquivo vazio como placeholder
+		# (você deve substituir isso por um wallpaper real posteriormente)
+		echo "Warning: Wallpaper não encontrado. Criando um placeholder."
 		touch "${pkgdir}/usr/share/backgrounds/lightdm-default.jpg"
 	fi
 	
@@ -299,10 +306,10 @@ EOF
 		install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
 	fi
     
-    # Criar diretório para scripts
+     # Criar diretório para scripts
     mkdir -p "${pkgdir}/usr/share/comm-i3wm/scripts"
     
-    # Criar o script de configuração para btop
+    # Criar o script diretamente
     cat > "${pkgdir}/usr/share/comm-i3wm/scripts/configure-btop.sh" << 'EOF'
 #!/usr/bin/env bash
 
@@ -464,15 +471,5 @@ EOF
     # Tornar o script executável
     chmod 755 "${pkgdir}/usr/share/comm-i3wm/scripts/configure-pacseek.sh"
     
-    # Adicionar arquivo para configuração de sessão do i3
-    mkdir -p "${pkgdir}/usr/share/xsessions"
-    cat > "${pkgdir}/usr/share/xsessions/i3-comm.desktop" << 'EOF'
-[Desktop Entry]
-Name=i3 Community
-Comment=improved dynamic tiling window manager
-Exec=i3
-TryExec=i3
-Type=Application
-Keywords=tiling;wm;windowmanager;window;manager;
-EOF
+
 }
