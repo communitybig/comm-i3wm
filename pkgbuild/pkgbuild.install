@@ -33,8 +33,8 @@ declare IS_DBLOCK=false
 declare DM='lightdm'
 declare WM='i3wm'
 declare pkgname=comm-"${WM}"
-declare servicesToEnable=("${DM}" "avahi-daemon" "sshd" "cups" "bluetooth")
-declare servicesToDisable=("lxdm" "sddm" "gdm")
+declare servicesToEnable=("${DM}" avahi-daemon sshd cups bluetooth)
+declare servicesToDisable=(lxdm sddm gdm)
 
 msg() {
 	local msg="$1"
@@ -59,6 +59,7 @@ sh_load_optdepends() {
 		mapfile -t OPTDEPENDS <"$info_file"
 	else
 		msg "${red}FATAL: Something went wrong! File '$info_file' not found or without read permission."
+		msg "${red}FATAL: Something went wrong! File '$info_file' not found or without read permission."
 	fi
 }
 
@@ -71,31 +72,15 @@ sh_restoring_lock() {
 
 sh_check_package_exist() {
 	local pkg
-	local not_installed=()
-	local not_found=()
-
-	# Verifica pacotes instalados localmente
 	for pkg in "${OPTDEPENDS[@]}"; do
-		if ! pacman -Qq "$pkg" &>/dev/null; then
-			not_installed+=("$pkg")
+		if ! pacman -Qs "$pkg" &>/dev/null; then
+			if ! pacman -Ss "^$pkg$" &>/dev/null; then
+				msg "${yellow}Warning: package '$pkg' not found in repo, skipping"
+				continue
+			fi
 		fi
 		log_ok "Check: ${cyan}$pkg"
 	done
-
-	# Verifica pacotes ausentes no repositório
-	if ((${#not_installed[@]})); then
-		for pkg in "${not_installed[@]}"; do
-			if ! pacman -Ssq "^$pkg$" &>/dev/null; then
-				not_found+=("$pkg")
-			fi
-		done
-	fi
-
-	# Se houver pacotes não encontrados, avisa mas continua
-	if ((${#not_found[@]})); then
-		msg "${yellow}Warning: The following packages were not found in the repositories: ${not_found[*]}"
-		msg "${yellow}Continuing without installing these packages."
-	fi
 }
 
 sh_start_dbus_in_chroot() {
@@ -127,7 +112,7 @@ copy_skel_files() {
     if [[ "$mode" == "all" ]]; then
         # Copia todos os arquivos de skel (para instalação inicial)
         msg "Copying skel to $target_dir..."
-        cp -rfp /etc/skel/. "$target_dir/" &>/dev/null
+        cp -Rfpa /etc/skel/. "$target_dir/" &>/dev/null
         log_ok "Full skel copy complete"
     elif [[ "$mode" == "new" ]]; then
         # Copia apenas arquivos que não existem (para atualização)
@@ -168,6 +153,32 @@ add_i3_config_if_not_exists() {
     fi
 }
 
+# Configurar diretórios do LightDM
+setup_lightdm() {
+    # Criar diretórios necessários
+    mkdir -p /etc/lightdm/lightdm.conf.d
+    
+    # Configurar sessão padrão para i3
+    if [ ! -f /etc/lightdm/lightdm.conf.d/50-i3.conf ]; then
+        echo "[Seat:*]" > /etc/lightdm/lightdm.conf.d/50-i3.conf
+        echo "user-session=i3-comm" >> /etc/lightdm/lightdm.conf.d/50-i3.conf
+        chmod 644 /etc/lightdm/lightdm.conf.d/50-i3.conf
+        log_ok "Set i3-comm as default session for LightDM"
+    fi
+    
+    # Garantir que o LightDM está instalado e configurado
+    if pacman -Q lightdm &>/dev/null && pacman -Q lightdm-slick-greeter &>/dev/null; then
+        # Configurar o slick-greeter como greeter padrão
+        if ! grep -q "greeter-session=slick-greeter" /etc/lightdm/lightdm.conf 2>/dev/null; then
+            sed -i 's/^#greeter-session=.*/greeter-session=slick-greeter/' /etc/lightdm/lightdm.conf 2>/dev/null
+            if ! grep -q "greeter-session=" /etc/lightdm/lightdm.conf 2>/dev/null; then
+                echo "greeter-session=slick-greeter" >> /etc/lightdm/lightdm.conf
+            fi
+            log_ok "Configured slick-greeter as default greeter"
+        fi
+    fi
+}
+
 post_install() {
 	msg "Initializing system installation and configuration..."
 
@@ -178,7 +189,8 @@ post_install() {
 	: "${IN_CHROOT_INSTALLER_USER:=root}"
 
 	if $IN_CHROOT_INSTALLER; then
-		sh_start_dbus_in_chroot
+		# sh_start_dbus_in_chroot
+		:
 	fi
 
 	if [[ -f /var/lib/pacman/db.lck ]]; then
@@ -187,40 +199,23 @@ post_install() {
 		rm -f /var/lib/pacman/db.lck &>/dev/null
 	fi
 
-	# Common packages for all GPUs - simplified list
+	# Common packages for all GPUs
 	COMMON_PACKAGES=(
-		"mhwd-biglinux"
-		"mesa"
-		"vulkan-mesa-layers"
+		mhwd-biglinux
+		mesa
+		lib32-mesa
+		vulkan-mesa-layers
+		lib32-vulkan-mesa-layers
 	)
 
-	synchronizing_database() {
-		pacman -Sy --noconfirm &>/dev/null || msg "${yellow}Warning: Database synchronization failed. Continuing..."
-	}
+    synchronizing_database() {
+        pacman -Syu --quiet --noconfirm 1>/dev/null || true
+    }
 
-	install_packages() {
-		local packages=("$@")
-		local not_found=()
-		
-		# Verificar se os pacotes existem
-		for pkg in "${packages[@]}"; do
-			if ! pacman -Ssq "^$pkg$" &>/dev/null; then
-				not_found+=("$pkg")
-			fi
-		done
-		
-		# Remover pacotes não encontrados
-		for pkg in "${not_found[@]}"; do
-			packages=(${packages[@]//$pkg/})
-		done
-		
-		# Instalar pacotes restantes se houver
-		if ((${#packages[@]})); then
-			if ! pacman -S --needed --noconfirm "${packages[@]}" &>/dev/null; then
-				msg "${yellow}Warning: Some packages failed to install. Continuing without them."
-			fi
-		fi
-	}
+    install_packages() {
+        # Importante: mantém o --overwrite \* para garantir a instalação de todos os pacotes
+        pacman -S --quiet --noconfirm --needed --overwrite \* "$@" 1>/dev/null || true
+    }
 
 	msg "Please wait, synchronizing databases..."
 	synchronizing_database
@@ -231,50 +226,44 @@ post_install() {
 	msg "Checking for the existence of packages..."
 	sh_check_package_exist
 
-	# Filtrar pacotes disponíveis
-	local available_packages=()
-	for pkg in "${OPTDEPENDS[@]}"; do
-		if pacman -Ssq "^$pkg$" &>/dev/null; then
-			available_packages+=("$pkg")
-		fi
-	done
-
-	msg "Installing optdepends packages (only available ones)"
-	install_packages "${available_packages[@]}"
+	msg "Installing optdepends packages: ${OPTDEPENDS[*]}"
+	install_packages "${OPTDEPENDS[@]}"
 
 	msg "Detecting GPU and installing appropriate drivers..."
-	GPU_INFO=$(lspci -nnk | grep -A3 -E "VGA|3D|Display" 2>/dev/null)
+	GPU_INFO=$(lspci -nnk | grep -A3 -E "VGA|3D|Display")
 
 	if grep -qiw "NVIDIA" <<<"$GPU_INFO"; then
 		msg "NVIDIA detected! Installing drivers..."
 
-		KERNEL_VERSION=$(uname -r | cut -d '.' -f1,2 | tr -d '.' 2>/dev/null)
+		msg "Detect kernel version and set package name"
+		KERNEL_VERSION=$(uname -r | cut -d '.' -f1,2 | tr -d '.')
 		KERNEL_PACKAGE="linux${KERNEL_VERSION}-nvidia"
 
-		# Verificar se o pacote do kernel existe
-		if pacman -Ssq "^$KERNEL_PACKAGE$" &>/dev/null; then
-			msg "Detected kernel: $KERNEL_VERSION"
-			msg "Installing NVIDIA packages: $KERNEL_PACKAGE nvidia-utils nvidia-settings"
-			install_packages "$KERNEL_PACKAGE" "nvidia-utils" "nvidia-settings"
+		msg "Detected kernel: $KERNEL_VERSION"
+		msg "Installing NVIDIA packages: $KERNEL_PACKAGE nvidia-utils nvidia-settings"
+		install_packages "$KERNEL_PACKAGE" nvidia-utils nvidia-settings
 
-			msg "Blacklisting Nouveau..."
-			echo -e "blacklist nouveau\ninstall nouveau /bin/true" > /etc/modprobe.d/nouveau.conf
-		else
-			msg "${yellow}Warning: NVIDIA kernel package $KERNEL_PACKAGE not found. Skipping driver installation."
-		fi
+		msg "Blacklisting Nouveau..."
+		echo -e "blacklist nouveau\ninstall nouveau /bin/true" > /etc/modprobe.d/nouveau.conf    
+        echo -e "blacklist nouveau\ninstall nouveau /bin/true" > /etc/modprobe.d/blacklist.conf
 
 	elif grep -qiw "Intel" <<<"$GPU_INFO"; then
 		msg "Intel GPU detected! Installing drivers..."
-		install_packages "vulkan-intel"
+		install_packages vulkan-intel lib32-vulkan-intel
+		:
 	elif grep -qEiw "AMD|ATI" <<<"$GPU_INFO"; then
 		msg "AMD/ATI GPU detected! Installing drivers..."
-		install_packages "vulkan-radeon" "xf86-video-amdgpu"
+		install_packages mesa-utils \
+			vulkan-icd-loader lib32-vulkan-icd-loader \
+			vulkan-headers vulkan-radeon lib32-vulkan-radeon \
+			mhwd-amdgpu mhwd-ati
+		:
 	else
 		msg "${yellow}Warning: No compatible GPU detected. Skipping driver installation.${reset}"
 	fi
 
 	msg "Create the ${DM^} user if it doesn't exist"
-	if ! id "${DM}" &>/dev/null; then
+	if ! id "${DM}" >/dev/null; then
 		msg "Creating ${DM^} user..."
 		useradd -r -s /usr/bin/nologin -M -d /var/lib/${DM} ${DM} &>/dev/null
 	else
@@ -282,69 +271,68 @@ post_install() {
 	fi
 
 	msg "Setting up ${DM^} directory..."
-	mkdir -p /var/lib/${DM} &>/dev/null
-	chown -R ${DM}:${DM} /var/lib/${DM} &>/dev/null
+	mkdir -p /var/lib/${DM} >/dev/null
+	chown -R ${DM}:${DM} /var/lib/${DM} >/dev/null
 
 	msg "Setting up user..."
-	user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd 2>/dev/null)
+	user=$(awk -F: '$3 >= 1000 && $3 < 65000 { print $1; exit }' /etc/passwd)
 	if $IN_CHROOT_INSTALLER; then
-		if [[ -n $IN_CHROOT_INSTALLER_USER && $IN_CHROOT_INSTALLER_USER != 'root' ]]; then
+		if [[ -n $IN_CHROOT_INSTALLER_USER || $IN_CHROOT_INSTALLER_USER != 'root' ]]; then
 			user=$IN_CHROOT_INSTALLER_USER
 		fi
 	fi
-	
-	if [[ -n "$user" ]]; then
-		user_home=$(getent passwd "$user" | cut -d: -f6)
-		
-		# Gerenciamento de arquivos do skel
-		if ! $IS_UPGRADE; then
-			# Instalação inicial - copia todos os arquivos
-			copy_skel_files "$user_home" "all"
-		else
-			# Atualização - copia apenas arquivos novos
-			copy_skel_files "$user_home" "new"
-		fi
+	user_home=$(getent passwd "$user" | cut -d: -f6)
 
-		msg "Setting user folder permissions in ${user_home}"
-		chown -R "$user:$user" "$user_home" &>/dev/null
+	# Gerenciamento de arquivos do skel
+	if ! $IS_UPGRADE; then
+	    # Instalação inicial - copia todos os arquivos
+	    copy_skel_files "$user_home" "all"
 	else
-		msg "${yellow}Warning: No suitable user found for skel configuration"
+	    # Atualização - copia apenas arquivos novos
+	    copy_skel_files "$user_home" "new"
 	fi
 
-	if command -v nautilus &>/dev/null; then
+	msg "Setting user folder permissions in ${user_home}"
+	chown -R "$user:$user" "$user_home" &>/dev/null
+
+	if command -v nautilus >/dev/null; then
 		msg "Configuring Nautilus..."
-		if glib-compile-schemas /usr/share/glib-2.0/schemas/ &>/dev/null; then
+		if glib-compile-schemas /usr/share/glib-2.0/schemas/; then
 			msg "Nautilus schemas compiled successfully!"
 		else
 			msg "${yellow}Warning: Failed to compile Nautilus schemas. Some features may not work correctly.${reset}"
 		fi
 	fi
 
+    # Configurar i3 como sessão padrão no LightDM
+    setup_lightdm
+
 	if ! $IS_UPGRADE; then
 		msg "Enabling ${DM^}..."
-		if ! systemctl enable ${DM} &>/dev/null; then
-			msg "${yellow}Warning: Failed to enable ${DM^}. Please enable it manually after installation.${reset}"
+		if ! systemctl enable ${DM} 1>/dev/null; then
+			msg "${red}Error: It went wrong when activating ${DM^}"
 		fi
 	fi
 
 	for service in "${servicesToDisable[@]}"; do
-		if systemctl is-enabled --quiet "${service}" 2>/dev/null; then
+		if systemctl is-active --quiet "${service}"; then
 			msg "Disabling service ${service}..."
 			if ! systemctl disable "${service}" &>/dev/null; then
-				msg "${yellow}Warning: Failed to disable service ${service}"
+				msg "${red}Error: It went wrong when desactivating service ${service}"
 			fi
 		else
 			msg "${green}Service ${service} is already inactive..."
+			continue
 		fi
 	done
 
 	for service in "${servicesToEnable[@]}"; do
-		if systemctl is-enabled --quiet "${service}" 2>/dev/null; then
-			msg "${green}Service ${service} is already enabled..."
+		if systemctl is-active --quiet "${service}"; then
+			msg "${green}Service ${service} is already active..."
+			continue
 		else
-			msg "Enabling service ${service}..."
 			if ! systemctl enable "${service}" &>/dev/null; then
-				msg "${yellow}Warning: Failed to enable service ${service}"
+				msg "${red}Error: It went wrong when activating service ${service}"
 			fi
 		fi
 	done
@@ -352,63 +340,42 @@ post_install() {
 	if ! $IN_CHROOT_INSTALLER; then
 		if ! $IS_UPGRADE; then
 			msg "Please wait, Generating initramfs for all kernels..."
-			if ! mkinitcpio -P &>/dev/null; then
-				msg "${yellow}Warning: Failed to generate initramfs. System may not boot properly."
-			fi
+			mkinitcpio -P &>/dev/null
 		fi
 
 		msg "Configuring GRUB..."
-		# Change GRUB config if it exists
-		if [[ -f /etc/default/grub ]]; then
-			# Backup GRUB config first
-			cp -f /etc/default/grub /etc/default/grub.backup
-			
-			# Update GRUB distributor if needed
-			if ! grep -qi "${WM}" /etc/default/grub; then
-				sed -i "s/^GRUB_DISTRIBUTOR=\"\(.*\)\"/GRUB_DISTRIBUTOR=\"\1 ${WM^}\"/" /etc/default/grub
-			fi
-			
-			# Update GRUB command line with care
-			if ! grep -q "plymouth.enable=1" /etc/default/grub; then
-				# Only update if certain parameters aren't already there
-				sed -i 's|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash plymouth.enable=1 loglevel=4 libata.noacpi=1 acpi=force nowatchdog tsc=nowatchdog intel_pstate=active amd_pstate=active"|' /etc/default/grub
-			fi
-
-			msg "Generating GRUB configuration files..."
-			if command -v update-grub &>/dev/null; then
-				if ! update-grub &>/dev/null; then
-					msg "${yellow}Warning: Failed to update GRUB. Please run 'update-grub' manually."
-				fi
-			elif command -v grub-mkconfig &>/dev/null; then
-				if ! grub-mkconfig -o /boot/grub/grub.cfg &>/dev/null; then
-					msg "${yellow}Warning: Failed to update GRUB. Please run 'grub-mkconfig -o /boot/grub/grub.cfg' manually."
-				fi
-			else
-				msg "${yellow}Warning: No GRUB update command found. Please update your bootloader manually."
-			fi
-		else
-			msg "${yellow}Warning: GRUB configuration file not found. Skipping GRUB configuration."
+		# Change GRUB config
+		if ! grep -qi "${WM}" /etc/default/grub; then
+			sed -i "s/^GRUB_DISTRIBUTOR=\"\(.*\)\"/GRUB_DISTRIBUTOR=\"\1 ${WM^}\"/" /etc/default/grub
 		fi
+		sed -i 's|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash plymouth.enable=1 loglevel=4 libata.noacpi=1 acpi=force apm=power-off nowatchdog tsc=nowatchdog cryptomgr.notests no_timer_check rcupdate.rcu_expedited=1 intel_pstate=active amd_pstate=active cpuidle.governor=teo split_lock_detect=off clearcpuid=514 transparent_hugepage=never skew_tick=1 intremap=off nosoftlockup audit=0 nomce systemd.show_status=auto rd.udev.log_level=3 apparmor=1 security=apparmor vconsole.font=Uni2-Fixed16 intel_iommu=on amd_iommu=on tdx=on nvme_load=yes nouveau.modeset=1 i915.modeset=1 amdgpu.modeset=1 radeon.si_support=0 radeon.cik_support=0 amdgpu.si_support=1 amdgpu.cik_support=1 nvidia.modeset=1 nvidia_drm.modeset=1 DEEPIN_GFXMODE="|' /etc/default/grub 1>/dev/null
+
+		msg "Generating GRUB configuration files..."
+		update-grub &>/dev/null
 	fi
 
 	# Restauring pacman lock: /var/lib/pacman/db.lck
 	sh_restoring_lock
 
-	# Execute configuration scripts
-	if [ -f "/usr/share/comm-i3wm/scripts/configure-btop.sh" ]; then
-		/usr/share/comm-i3wm/scripts/configure-btop.sh
-	else
-		msg "${yellow}Warning: btop configuration script not found."
-	fi
-	
-	if [ -f "/usr/share/comm-i3wm/scripts/configure-pacseek.sh" ]; then
-		/usr/share/comm-i3wm/scripts/configure-pacseek.sh
-	else
-		msg "${yellow}Warning: pacseek configuration script not found."
-	fi
+    # Configurar os arquivos .desktop para terminais
+    if [ -x "/usr/share/comm-i3wm/scripts/configure-btop.sh" ]; then
+        /usr/share/comm-i3wm/scripts/configure-btop.sh
+    fi
+    
+    if [ -x "/usr/share/comm-i3wm/scripts/configure-pacseek.sh" ]; then
+        /usr/share/comm-i3wm/scripts/configure-pacseek.sh
+    fi
 
 	if ! $IS_UPGRADE; then
-		msg "Installation complete. Please reboot your system for changes to take effect."
+		msg "Installation complete. Rebooting in 10 seconds..."
+		# Countdown before reboot
+		for i in $(seq 10 -1 1); do
+			printf "%d..." "$i"
+			sleep 1
+		done
+		echo
+		msg "Rebooting now..."
+		reboot
 	else
 		msg "Upgrade complete."
 	fi
@@ -417,4 +384,13 @@ post_install() {
 post_upgrade() {
 	IS_UPGRADE=true
 	post_install
+    
+    # Executar o script de configuração do btop
+    if [ -x "/usr/share/comm-i3wm/scripts/configure-btop.sh" ]; then
+        /usr/share/comm-i3wm/scripts/configure-btop.sh
+    fi
+    
+    if [ -x "/usr/share/comm-i3wm/scripts/configure-pacseek.sh" ]; then
+        /usr/share/comm-i3wm/scripts/configure-pacseek.sh
+    fi
 }
