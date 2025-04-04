@@ -199,7 +199,7 @@ optdepends=(
 	galculator
 	xed
 	pix
-	mpv
+	vlc
 	pantheon-calendar
     comm-improve-compatibility
     comm-xfce-datetime
